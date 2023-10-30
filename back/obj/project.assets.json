@@ -474,11 +474,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/adomas/Documents/uni/informaciniu sistemo pagrindai/homeopatija/back/homeo/homeo.csproj",
+      "projectUniqueName": "/home/adomas/Documents/uni/informaciniu sistemo pagrindai/homeopatija/back/homeo.csproj",
       "projectName": "homeo",
-      "projectPath": "/home/adomas/Documents/uni/informaciniu sistemo pagrindai/homeopatija/back/homeo/homeo.csproj",
+      "projectPath": "/home/adomas/Documents/uni/informaciniu sistemo pagrindai/homeopatija/back/homeo.csproj",
       "packagesPath": "/home/adomas/.nuget/packages/",
-      "outputPath": "/home/adomas/Documents/uni/informaciniu sistemo pagrindai/homeopatija/back/homeo/obj/",
+      "outputPath": "/home/adomas/Documents/uni/informaciniu sistemo pagrindai/homeopatija/back/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/adomas/.nuget/NuGet/NuGet.Config"

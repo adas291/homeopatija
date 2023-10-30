@@ -1,33 +1,27 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
+import './style.css'
+import Navbar from './components/Navbar'
+import { Route, Routes } from 'react-router-dom'
+import DrugContainer from './components/drugs/drug-container'
+import DrugView from './components/drugs/drug-view'
+import BurejaView from './components/bureja/bureja'
+import IllnessView from './components/illness/Ilness-view'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Navbar/>
+      <Routes>
+        <Route path="/vaistai" element={<DrugContainer/>}> </Route>
+        <Route path="/vaistai/1" element={<DrugView title='Aspirinas' composition={['Miltai', 'Kiaušinis', 'Druska', 'Kepimo milteliai']} price={5.99}/>}> </Route>
+        <Route path="/vaistai/2" element={<DrugView title='Ibuprofen' composition={['Kava', 'Kiaušinis', 'Pipirai', 'Soda']} price={7.99}/>}> </Route>
+        <Route path="/bureja" element={<BurejaView/>}> </Route>
+        <Route path="/ligos" element={<IllnessView/>}> </Route>
+      </Routes> 
     </>
   )
 }

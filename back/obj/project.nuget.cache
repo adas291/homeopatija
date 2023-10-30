@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "omwQKGqBDDc7t3e04k7Dhg8uw+5aKCJoXJeOuUMYbWfTuu5pLrJ1H416JfL9L8zgCahzhkO1b5KLCQb7XLtpOw==",
+  "dgSpecHash": "a7DgI/jkLdoRomPAZTJHKLawOuA4chvqhB5apnAt49jNMCznlrwkM+d+er9ZpfcbPs+GEPnsA2s4bssF7T4Dgg==",
   "success": true,
-  "projectFilePath": "/home/adomas/Documents/uni/informaciniu sistemo pagrindai/homeopatija/back/homeo/homeo.csproj",
+  "projectFilePath": "/home/adomas/Documents/uni/informaciniu sistemo pagrindai/homeopatija/back/homeo.csproj",
   "expectedPackageFiles": [
     "/home/adomas/.nuget/packages/microsoft.aspnetcore.openapi/7.0.10/microsoft.aspnetcore.openapi.7.0.10.nupkg.sha512",
     "/home/adomas/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
