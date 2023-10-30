@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "omwQKGqBDDc7t3e04k7Dhg8uw+5aKCJoXJeOuUMYbWfTuu5pLrJ1H416JfL9L8zgCahzhkO1b5KLCQb7XLtpOw==",
+  "success": true,
+  "projectFilePath": "/home/adomas/Documents/uni/informaciniu sistemo pagrindai/homeopatija/back/homeo/homeo.csproj",
+  "expectedPackageFiles": [
+    "/home/adomas/.nuget/packages/microsoft.aspnetcore.openapi/7.0.10/microsoft.aspnetcore.openapi.7.0.10.nupkg.sha512",
+    "/home/adomas/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "/home/adomas/.nuget/packages/microsoft.openapi/1.4.3/microsoft.openapi.1.4.3.nupkg.sha512",
+    "/home/adomas/.nuget/packages/swashbuckle.aspnetcore/6.5.0/swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
+    "/home/adomas/.nuget/packages/swashbuckle.aspnetcore.swagger/6.5.0/swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512",
+    "/home/adomas/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.5.0/swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512",
+    "/home/adomas/.nuget/packages/swashbuckle.aspnetcore.swaggerui/6.5.0/swashbuckle.aspnetcore.swaggerui.6.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}
