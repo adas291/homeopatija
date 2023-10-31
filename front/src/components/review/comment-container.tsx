@@ -9,10 +9,12 @@ interface CommentProps {
 
 function Comment({ username, body }: CommentProps) {
   return (
-    <div className="comment-container">
-      <div className='comment-header'>
+    <div className="border border-gray-400 rounded-md p-3 mb-1">
+      <div className="flex flex-wrap justify-between">
         <div className="user-name">{username}</div>
-        <button>Pranešti</button>
+        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full">
+         Pranešti 
+        </button>
       </div>
       <div className="comment-body">{body}</div>
     </div>
