@@ -1,0 +1,26 @@
+@model homeopatija.Models.DrugView
+@{
+  ViewData["Title"] = Model.Drug.Title;
+}
+
+<div class="drug-card mb-3">
+    <img width="200px" src="@Model.Drug.ImgUrl" alt="@Model.Drug.Title" class="product-image">
+    <h2>@Model.Drug.Title</h2>
+    <p class="product-price">$@Model.Drug.Price</p>
+    <a href="/Product/Details/@Model.Drug.ID" class="product-details-link">Peržiūrėti</a>
+</div>
+
+
+<div class="comment-section">
+  <form action="">
+    <label for="commment">Rašyti komentarą</label>
+    <input type="text" name="comment-body" id="">
+    <input type="submit" value="Siųsti">
+  </form>
+  <h1>Komentarai</h1>
+  @foreach (var item in Model.Comments)
+  {
+    Html.RenderPartial("_CommentPartial", item);
+  }
+</div>
+

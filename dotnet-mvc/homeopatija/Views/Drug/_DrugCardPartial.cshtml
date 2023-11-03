@@ -1,0 +1,9 @@
+@model Drug
+
+
+<div class="drug-card">
+    <img width="200px" src="@Model.ImgUrl" alt="@Model.Title" class="product-image">
+    <h2>@Model.Title</h2>
+    <p class="product-price">$@Model.Price</p>
+    <a href="/drug/@Model.ID" class="product-details-link">Peržiūrėti</a>
+</div>

@@ -1,0 +1,14 @@
+@model Comment
+
+<div class="comment p-1 m-2">
+  <div class="comment-header">
+    <div>
+      <div>@Model.Author</div>
+    </div>
+    <div class="d-flex flex-direction-row gap-2">
+      <div class="">@Model.CreationTime.ToString("yyyy-MM-dd  HH:mm:ss")</div>
+      <a href="#" class="btn btn-danger">Pranešti</a>
+    </div>
+  </div>
+  <div>@Model.Body</div>
+</div>

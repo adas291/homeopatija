@@ -1,0 +1,103 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.comment{
+  border-radius: 0.5rem;
+  border: solid black 1px;
+  /* box-shadow: 5px 20px, 20px rgb(255, 14, 14); */
+  box-shadow: 1px 1px 10px rgb(185, 185, 185);
+}
+
+.comment-container {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: solid rgba(168, 168, 168, 0.363) 1px;
+}
+
+.comment-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: lightgoldenrodyellow;
+  border: solid black 1px;
+  border-radius: 0.5rem;
+  /* padding: 0.5rem; */
+  margin: 0.5rem;
+
+}
+
+.comment-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  border: solid black 1px;
+}
+
+
+.drug-card {
+  border-radius: 0.5rem;
+  border: solid steelblue 1px;
+  padding: 1rem;
+}
+
+.drug-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 300px);
+  grid-gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* Media query for larger screens */
+@media screen and (min-width: 768px) {
+  .drug-grid {
+    grid-template-columns: repeat(3, 300px);
+  }
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 767px) {
+  .drug-grid {
+    grid-template-columns: repeat(2, 300px);
+  }
+}
+
+/* Media query for even smaller screens */
+@media screen and (max-width: 480px) {
+  .drug-grid {
+    grid-template-columns: repeat(1, 300px);
+  }
+}
