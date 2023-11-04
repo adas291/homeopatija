@@ -1,14 +1,14 @@
 @model Comment
 
-<div class="comment p-1 m-2">
+<div  class="comment p-1 m-2">
   <div class="comment-header">
     <div>
-      <div>@Model.Author</div>
+      @Html.DisplayFor(m=> m.Author)
     </div>
     <div class="d-flex flex-direction-row gap-2">
-      <div class="">@Model.CreationTime.ToString("yyyy-MM-dd  HH:mm:ss")</div>
-      <a href="#" class="btn btn-danger">Pranešti</a>
+      @Html.DisplayFor(m=>m.CreationTime)
+      <button  data-comment-id=@Model.Id data-comment-report class="btn btn-danger">Pranešti</a>
     </div>
   </div>
-  <div>@Model.Body</div>
+  @Html.DisplayFor(m => m.Body)
 </div>

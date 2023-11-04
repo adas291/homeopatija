@@ -23,6 +23,12 @@ public class DrugController : Controller
       new (){Id = 4, Body = "baisiai geras", Author = "Aldona3"},
       new (){Id = 5, Body = "baisiai geras", Author = "Aldona4"},
       new (){Id = 6, Body = "baisiai geras", Author = "Aldona5"},
+      new (){Id = 6, Body = "baisiai geras", Author = "Aldona5"},
+      new (){Id = 6, Body = "baisiai geras", Author = "Aldona5"},
+      new (){Id = 6, Body = "baisiai geras", Author = "Aldona5"},
+      new (){Id = 6, Body = "baisiai geras", Author = "Aldona5"},
+      new (){Id = 6, Body = "baisiai geras", Author = "Aldona5"},
+      new (){Id = 6, Body = "baisiai geras", Author = "Aldona5"},
   };
 
   public IActionResult Index()

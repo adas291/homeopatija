@@ -4,19 +4,33 @@
 }
 
 <div class="drug-card mb-3">
-    <img width="200px" src="@Model.Drug.ImgUrl" alt="@Model.Drug.Title" class="product-image">
-    <h2>@Model.Drug.Title</h2>
-    <p class="product-price">$@Model.Drug.Price</p>
-    <a href="/Product/Details/@Model.Drug.ID" class="product-details-link">Peržiūrėti</a>
+  <img width="200px" src="@Model.Drug.ImgUrl" alt="@Model.Drug.Title" class="product-image">
+  <h2>@Model.Drug.Title</h2>
+  <p class="product-price">$@Model.Drug.Price</p>
+  <a href="/Product/Details/@Model.Drug.ID" class="product-details-link">Peržiūrėti</a>
 </div>
 
-
-<div class="comment-section">
-  <form action="">
-    <label for="commment">Rašyti komentarą</label>
-    <input type="text" name="comment-body" id="">
-    <input type="submit" value="Siųsti">
+<dialog report-modal>
+  <form action="/report/comment" method="post">
+    <input type="hidden" id="comment-id-input" name="comment-id" value="">
+    <div>Pranešti apie netinkamą komentarą</div>
+    <button class="btn btn-outline-danger" data-close-modal>Atšaukti</button>
+    <button class="btn btn-success" data-submmit-report>Pranešti</button>
   </form>
+</dialog>
+
+
+<div id="comment-section">
+
+  <form class="m-3" method="post" action="/report">
+    <div class="form-group">
+      <label class="h3" for="comment-body">Rašyti komentarą</label>
+      <textarea class="form-control rounded-0" id="exampleFormControlTextarea2" rows="3"></textarea>
+    </div>
+    <button id="submit-comment" class="btn btn-primary float-right" type="submit">Komentuoti</button>
+  </form>
+
+
   <h1>Komentarai</h1>
   @foreach (var item in Model.Comments)
   {
@@ -24,3 +38,59 @@
   }
 </div>
 
+<script>
+
+  const notification = document.getElementById("notification")
+
+  function showNotification(message) {
+    notification.style.display = "block";
+    notification.querySelector("#notification-body").textContent = message
+
+    setTimeout(() => {
+      notification.style.display = "none"
+    }, 3000)
+
+  }
+
+  //------comment submit ------------
+  const commentButton = document.querySelector("#submit-comment")
+  commentButton.addEventListener("click", (event) => {
+    event.preventDefault()
+    showNotification("Komentaras išsaugotas")
+
+  })
+
+
+  //------comment reporting ---------
+  const modal = document.querySelector("[report-modal]")
+  const commentSection = document.querySelector("#comment-section");
+  const commentIdInput = document.getElementById("comment-id-input");
+
+  commentSection.addEventListener("click", (event) => {
+
+    if (event.target && event.target.getAttribute("data-comment-Id")) {
+      const commentId = event.target.getAttribute("data-comment-id");
+      commentIdInput.value = commentId
+      modal.showModal();
+    }
+
+  });
+
+  const closeButton = document.querySelector("[data-close-modal]")
+
+  closeButton.addEventListener("click", (event) => {
+    event.preventDefault()
+    console.log("closing modal")
+    modal.close()
+  })
+
+  const submmitReportButton = document.querySelector("[data-submmit-report]")
+
+  submmitReportButton.addEventListener("click", (event) => {
+    event.preventDefault()
+    modal.close()
+    showNotification("Pranešimas apie komentarą nr." + commentIdInput.value + " išsiųstas")
+
+  })
+
+</script>
