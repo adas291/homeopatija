@@ -10,12 +10,22 @@
   <a href="/Product/Details/@Model.Drug.ID" class="product-details-link">Peržiūrėti</a>
 </div>
 
-<dialog report-modal>
+<dialog id="report-comment-modal">
   <form action="/report/comment" method="post">
     <input type="hidden" id="comment-id-input" name="comment-id" value="">
     <div>Pranešti apie netinkamą komentarą</div>
-    <button class="btn btn-outline-danger" data-close-modal>Atšaukti</button>
-    <button class="btn btn-success" data-submmit-report>Pranešti</button>
+    <button class="btn btn-outline-danger" id="cancel-report-btn">Atšaukti</button>
+    <button class="btn btn-success" id="submit-report-btn">Pranešti</button>
+  </form>
+</dialog>
+
+<dialog id="edit-comment-modal">
+  <form action="/report/comment" method="post">
+    <input type="hidden" id="comment-id-input" name="comment-id" value="">
+    <div>Redaguoti komentarą</div>
+    <textarea class="form-control rounded-0" id="update-comment-body-area" rows="3"></textarea>
+    <button class="btn btn-outline-danger" id="cancel-edit-btn">Atšaukti</button>
+    <button class="btn btn-success" id="submit-updated-comment-btn">Atnaujinti komentarą</button>
   </form>
 </dialog>
 
@@ -25,7 +35,7 @@
   <form class="m-3" method="post" action="/report">
     <div class="form-group">
       <label class="h3" for="comment-body">Rašyti komentarą</label>
-      <textarea class="form-control rounded-0" id="exampleFormControlTextarea2" rows="3"></textarea>
+      <textarea class="form-control rounded-0" id="comment-body" rows="3"></textarea>
     </div>
     <button id="submit-comment" class="btn btn-primary float-right" type="submit">Komentuoti</button>
   </form>
@@ -41,6 +51,8 @@
 <script>
 
   const notification = document.getElementById("notification")
+  const reportModal = document.getElementById("report-comment-modal")
+  const editCommentModal = document.getElementById("edit-comment-modal")
 
   function showNotification(message) {
     notification.style.display = "block";
@@ -60,37 +72,90 @@
 
   })
 
-
   //------comment reporting ---------
-  const modal = document.querySelector("[report-modal]")
   const commentSection = document.querySelector("#comment-section");
   const commentIdInput = document.getElementById("comment-id-input");
 
   commentSection.addEventListener("click", (event) => {
-
-    if (event.target && event.target.getAttribute("data-comment-Id")) {
+    if (event.target && event.target.hasAttribute("data-comment-report")) {
+      console.log("inside ivent")
       const commentId = event.target.getAttribute("data-comment-id");
       commentIdInput.value = commentId
-      modal.showModal();
+      reportModal.showModal();
     }
 
   });
 
-  const closeButton = document.querySelector("[data-close-modal]")
 
-  closeButton.addEventListener("click", (event) => {
+  const submitReportButton = document.getElementById("submit-report-btn")
+
+  submitReportButton.addEventListener("click", (event) => {
     event.preventDefault()
-    console.log("closing modal")
-    modal.close()
-  })
-
-  const submmitReportButton = document.querySelector("[data-submmit-report]")
-
-  submmitReportButton.addEventListener("click", (event) => {
-    event.preventDefault()
-    modal.close()
+    reportModal.close()
     showNotification("Pranešimas apie komentarą nr." + commentIdInput.value + " išsiųstas")
+  })
+
+  const cancelReportButton = document.getElementById("cancel-report-btn")
+  cancelReportButton.addEventListener("click", (event) => {
+    event.preventDefault()
+    reportModal.close()
+  })
+
+
+  //-------- comment editing -----------
+
+  commentSection.addEventListener("click", (event) => {
+    if (event.target && event.target.hasAttribute("data-comment-edit")) {
+      const commentId = event.target.getAttribute("data-comment-id");
+      commentIdInput.value = commentId
+
+      const commentElement = event.target.closest('.comment');
+      if (commentElement) {
+        const commentBody = commentElement.querySelector('.comment-body');
+
+        let updateCommentInput = document.getElementById("update-comment-body-area")
+        if (commentBody) {
+          updateCommentInput.value = commentBody.innerText
+        }
+        editCommentModal.showModal();
+      }
+    }
+
+  });
+
+  const cancelEditButton = document.getElementById("cancel-edit-btn")
+
+  cancelEditButton.addEventListener("click", (event) => {
+    event.preventDefault()
+    editCommentModal.close()
+  })
+
+
+  const submitEditedCommentButton = document.getElementById("submit-updated-comment-btn")
+
+  submitEditedCommentButton.addEventListener("click", (event) => {
+    event.preventDefault()
+    editCommentModal.close()
+
+    showNotification("Komentaras nr. " + commentIdInput.value + " atnaujintas");
 
   })
+
+  // -----------comment delete -----------------
+
+  const deleteCommentButton = document.getElementById("delete-comment-btn")
+
+  commentSection.addEventListener("click", (event) => {
+    if (event.target && event.target.hasAttribute("data-comment-delete")) {
+      const commentId = event.target.getAttribute("data-comment-id");
+      commentIdInput.value = commentId
+
+      let removedComment = document.querySelector("[comment-id]")
+      commentSection.removeChild(removedComment)
+
+      showNotification("Komentaras pašalintas (id " + commentId + ")")
+    }
+
+  });
 
 </script>
