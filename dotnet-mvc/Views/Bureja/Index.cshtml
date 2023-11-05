@@ -3,15 +3,29 @@
 }
 
 <style>
-    .img {
-        border: black;
-        display: flex;
-        justify-content: center;
+    body {
+        text-align: center;
+    }
+    .wizard_image {
+        width: 100%;
+        padding: 10px;
+    }
+    form {
+        display: inline-block;
+    }
+    textarea{
+        resize: both;
     }
 </style>
 
-<div class="text-center">
-    <p>Sveiki atvykę pas būrėją</p>
-</div>
+<div class="burejos_puslapis">
+    <div class="text-center">
+        <h1>Sveiki atvykę pas būrėją</h1>
+    </div>
 
-<img class = "wizard_image" src="imgs/wizard.png" alt="dėdė burtininkas">
+    <img class="wizard_image" src="imgs/wizard.png" alt="dėdė burtininkas">
+    <br>
+    <textarea>Jūsų klausimas</textarea>
+    <br>
+    <button>Klausti</button>
+</div>
