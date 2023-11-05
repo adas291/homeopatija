@@ -1,3 +1,5 @@
+@model homeopatija.Models.DUK
+
 @{
     ViewData["Title"] = "Homeopatija";
 }
@@ -6,14 +8,17 @@
     body {
         text-align: center;
     }
+
     .wizard_image {
         width: 100%;
         padding: 10px;
     }
+
     form {
         display: inline-block;
     }
-    textarea{
+
+    textarea {
         resize: both;
     }
 </style>
@@ -28,4 +33,11 @@
     <textarea>Jūsų klausimas</textarea>
     <br>
     <button>Klausti</button>
+    <a asp-action="Klausimynas">Pradėti klausimyną</a>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

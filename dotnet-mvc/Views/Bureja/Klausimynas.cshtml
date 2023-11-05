@@ -1,0 +1,29 @@
+﻿@model homeopatija.Models.DUK
+
+@{
+    ViewData["Title"] = "Klausimynas";
+}
+
+<h1>Atsakykite į klausimus:</h1>
+
+<h4>Ar jaučiate galvos skausmą?</h4>
+
+<div class="row">
+    <div class="col-md-4">
+        <form class="form" method="post">
+            <input type="submit" value="Taip" asp-page-handler="Button1" />
+            <input type="submit" value="Ne" asp-page-handler="Button2" />
+        </form>
+    </div>
+</div>
+
+<hr />
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -17,4 +17,20 @@ public class BurejaController : Controller
         return View();
     }
 
+    [Route("[controller]/Klausimynas")]
+    public IActionResult Klausimynas()
+    {
+        return View("Klausimynas");
+    }
+
+    public IActionResult OnPostButton1(IFormCollection data)
+    {
+        return View();
+    }
+
+
+    public IActionResult OnPostButton2(IFormCollection data)
+    {
+        return View();
+    }
 }
