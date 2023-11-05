@@ -1,0 +1,87 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+    ViewData["Title"] = "Compatability matrix";
+}
+
+<style>
+    .compat-table {
+        margin-top: 1rem;
+    }
+
+    .compat-table td {
+        font-size: 0;
+    }
+
+    .compat-table {
+        line-height: 0;
+    }
+
+    .column-header th {
+        white-space: nowrap;
+        writing-mode: vertical-rl;
+    }
+</style>
+
+<h1>Compatability matrix</h1>
+<form asp-action="Save">
+<input type="submit" value="Save" class="btn btn-primary" />
+
+<table cellspacing="0" cellpadding="0" class="compat-table">
+    <tr class="column-header">
+        <th></th>
+        @foreach (var rowItem in Model)
+        {
+            <th>@rowItem.Title</th>
+        }
+    </tr>
+
+    @foreach (var rowItem in Model)
+    {
+        <tr>
+            <th>@rowItem.Title</th>
+            @foreach (var columnItem in Model)
+            {
+                <td>
+                    <input
+                        x-row="@rowItem.ID"
+                        x-column="@columnItem.ID"
+                        disabled="@(rowItem.ID == columnItem.ID)"
+                        type="checkbox"
+                    />
+                </td>
+            }
+        </tr>
+    }
+</table>
+</form>
+
+<script>
+    const compat_table = document.getElementsByClassName("compat-table")[0]
+    const cells = compat_table.getElementsByTagName("input")
+
+    function findByRowAndColumn(rowId, columnId) {
+        for (var cell of cells) {
+            const cellRowId = cell.getAttribute("x-row")
+            const cellColumnId = cell.getAttribute("x-column")
+            if (rowId == cellRowId && columnId == cellColumnId) {
+                return cell
+            }
+        }
+    }
+
+    for (var cell of cells) {
+        if (cell.getAttribute("disabled")) continue
+
+        cell.addEventListener("input", (event) => {
+            const rowId = event.target.getAttribute("x-row")
+            const columnId = event.target.getAttribute("x-column")
+            console.log(rowId, columnId)
+
+            const mirrorCell = findByRowAndColumn(columnId, rowId)
+            mirrorCell.checked = !mirrorCell.checked
+        })
+    }
+</script>
