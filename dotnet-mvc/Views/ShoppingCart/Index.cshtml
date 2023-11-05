@@ -1,0 +1,51 @@
+﻿@model homeopatija.Models.ShoppingCartViewModel
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<h1>Shopping Cart</h1>
+
+@if (!Model.Items.Any())
+{
+    <p>Your shopping cart is empty.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Price per Item</th>
+                <th>Total Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Price</td>
+                    <td>@(item.Price * item.Quantity)</td>
+                    <td>
+                        @Html.ActionLink("Remove", "Remove", new { id=item.ProductId })
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" style="text-align:right"><strong>Total:</strong></td>
+                <td><strong>@Model.TotalPrice</strong></td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <p>
+        <a asp-action="Checkout">Proceed to Checkout</a>
+    </p>
+}
