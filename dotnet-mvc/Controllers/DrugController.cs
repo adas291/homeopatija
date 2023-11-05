@@ -29,22 +29,21 @@ public class DrugController : Controller
       new (){Id = 6, Body = "baisiai geras", Author = "Aldona5"},
       new (){Id = 6, Body = "baisiai geras", Author = "Aldona5"},
       new (){Id = 6, Body = "baisiai geras", Author = "Aldona5"},
-  };
+    };
 
-  public IActionResult Index()
-  {
-    return View(DrugsTable);
-  }
+    public IActionResult Index()
+    {
+        return View(DrugsTable);
+    }
 
+    [Route("[controller]/{id}")]
+    public IActionResult GetProductView(int id)
+    {
+        //simulated database
+        var model = new DrugView() { Drug = DrugsTable[id], Comments = comments };
 
-  [Route("[controller]/{id}")]
-  public IActionResult GetProductView(int id)
-  {
-    //simulated database
-    var model = new DrugView() { Drug = DrugsTable[id], Comments = comments };
-
-    return View("Product", model);
-  }
+        return View("Product", model);
+    }
 
 
 }
