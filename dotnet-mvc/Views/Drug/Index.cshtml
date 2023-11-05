@@ -1,12 +1,12 @@
 @model List<homeopatija.Models.Drug>
 
 @{
-  ViewBag.Title = "Vaistų sąrašas";
+    ViewBag.Title = "Vaistų sąrašas";
 }
 
 <div class="drug-grid">
     @foreach (var product in Model)
     {
-      Html.RenderPartial("_DrugCardPartial", product); 
+        Html.RenderPartial("_DrugCardPartial", product);
     }
 </div>

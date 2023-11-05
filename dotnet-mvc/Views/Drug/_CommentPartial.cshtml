@@ -1,14 +1,14 @@
 @model Comment
 
-<div  class="comment p-1 m-2">
-  <div class="comment-header">
-    <div>
-      @Html.DisplayFor(m=> m.Author)
+<div class="comment p-1 m-2">
+    <div class="comment-header">
+        <div>
+            @Html.DisplayFor(m=> m.Author)
+        </div>
+        <div class="d-flex flex-direction-row gap-2">
+            @Html.DisplayFor(m=>m.CreationTime)
+            <button data-comment-id=@Model.Id data-comment-report class="btn btn-danger">Pranešti</a>
+        </div>
     </div>
-    <div class="d-flex flex-direction-row gap-2">
-      @Html.DisplayFor(m=>m.CreationTime)
-      <button  data-comment-id=@Model.Id data-comment-report class="btn btn-danger">Pranešti</a>
-    </div>
-  </div>
-  @Html.DisplayFor(m => m.Body)
+    @Html.DisplayFor(m => m.Body)
 </div>

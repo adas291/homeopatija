@@ -1,0 +1,52 @@
+﻿@model IEnumerable<homeopatija.Models.DUK>
+
+@{
+    ViewData["Title"] = "Table";
+}
+
+<h1>DUK</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.eiliskumas)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.klausimas)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.atsakymas)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.sukurimo_data)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.eiliskumas)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.klausimas)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.atsakymas)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sukurimo_data)
+                </td>
+                <td>
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
