@@ -148,23 +148,32 @@ dialog::backdrop{
   align-items: center;
 }
 
+.product-cart-link {
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.product-cart-link:hover {
+    background: #71B4D1;
+}
+
 /* Media query for larger screens */
 @media screen and (min-width: 768px) {
-  .drug-grid {
-    grid-template-columns: repeat(3, 300px);
-  }
+    .drug-grid {
+        grid-template-columns: repeat(3, 300px);
+    }
 }
 
 /* Media query for smaller screens */
 @media screen and (max-width: 767px) {
-  .drug-grid {
-    grid-template-columns: repeat(2, 300px);
-  }
+    .drug-grid {
+        grid-template-columns: repeat(2, 300px);
+    }
 }
 
 /* Media query for even smaller screens */
 @media screen and (max-width: 480px) {
-  .drug-grid {
-    grid-template-columns: repeat(1, 300px);
-  }
+    .drug-grid {
+        grid-template-columns: repeat(1, 300px);
+    }
 }
