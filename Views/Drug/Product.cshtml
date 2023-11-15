@@ -10,12 +10,24 @@
   <a href="/Product/Details/@Model.Drug.ID" class="product-details-link">Peržiūrėti</a>
 </div>
 
+
 <dialog id="report-comment-modal">
   <form action="/report/comment" method="post">
     <input type="hidden" id="comment-id-input" name="comment-id" value="">
     <div>Pranešti apie netinkamą komentarą</div>
     <button class="btn btn-outline-danger" id="cancel-report-btn">Atšaukti</button>
     <button class="btn btn-success" id="submit-report-btn">Pranešti</button>
+  </form>
+</dialog>
+
+<dialog id="confirm-modal">
+  <form action="/comment/delete" method="post">
+    <input type="hidden" id="comment-id-input" name="comment-id" value="">
+    <div id="confirmation-message">Ar tikrai?</div>
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-outline-danger" id="cancel-btn">Atšaukti</button>
+      <button class="btn btn-success" id="confirm-btn">Taip</button>
+    </div>
   </form>
 </dialog>
 
@@ -76,32 +88,6 @@
   const commentSection = document.querySelector("#comment-section");
   const commentIdInput = document.getElementById("comment-id-input");
 
-  commentSection.addEventListener("click", (event) => {
-    if (event.target && event.target.hasAttribute("data-comment-report")) {
-      console.log("inside ivent")
-      const commentId = event.target.getAttribute("data-comment-id");
-      commentIdInput.value = commentId
-      reportModal.showModal();
-    }
-
-  });
-
-
-  const submitReportButton = document.getElementById("submit-report-btn")
-
-  submitReportButton.addEventListener("click", (event) => {
-    event.preventDefault()
-    reportModal.close()
-    showNotification("Pranešimas apie komentarą nr." + commentIdInput.value + " išsiųstas")
-  })
-
-  const cancelReportButton = document.getElementById("cancel-report-btn")
-  cancelReportButton.addEventListener("click", (event) => {
-    event.preventDefault()
-    reportModal.close()
-  })
-
-
   //-------- comment editing -----------
 
   commentSection.addEventListener("click", (event) => {
@@ -143,19 +129,52 @@
 
   // -----------comment delete -----------------
 
-  const deleteCommentButton = document.getElementById("delete-comment-btn")
+
+  const confirmModal = document.getElementById("confirm-modal")
+  confirm.showModal
+
+  const cancelButton = document.getElementById("cancel-btn")
+  const confirmButton = document.getElementById("confirm-btn")
+  const confirmationMessage = document.getElementById("confirmation-message")
 
   commentSection.addEventListener("click", (event) => {
-    if (event.target && event.target.hasAttribute("data-comment-delete")) {
-      const commentId = event.target.getAttribute("data-comment-id");
-      commentIdInput.value = commentId
 
-      let removedComment = document.querySelector("[comment-id]")
-      commentSection.removeChild(removedComment)
-
-      showNotification("Komentaras pašalintas (id " + commentId + ")")
+    if (!event.target) {
+      return
     }
 
+    const commentId = event.target.getAttribute("data-comment-id");
+    commentIdInput.value = commentId
+
+
+    if (event.target.hasAttribute("data-comment-delete")) {
+      confirmationMessage.innerText = "Ar tikrai norite ištrinti komentarą?"
+      confirmModal.showModal()
+  @* let removedComment = document.querySelector("[comment-id]")
+        commentSection.removeChild(removedComment) *@
+    }
+
+    if (event.target.hasAttribute("data-comment-report")) {
+      confirmationMessage.innerText = "Ar tikrai manote, kad komentaras yra netinkamas?"
+      confirmModal.showModal()
+  @* let removedComment = document.querySelector("[comment-id]")
+        commentSection.removeChild(removedComment) *@
+    }
+
+
+
   });
+
+  cancelButton.addEventListener("click", (event) => {
+    event.preventDefault()
+    confirmModal.close()
+  })
+  confirmButton.addEventListener("click", (event) => {
+    event.preventDefault()
+
+    confirmModal.close()
+    showNotification("Pasirinkimas išsaugotas")
+  })
+
 
 </script>
