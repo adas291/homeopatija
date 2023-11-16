@@ -8,6 +8,7 @@ public class Drug
   public string Title { get; set; }
   public string Description { get; set; }
   public decimal Price { get; set; }
+  public string ImageUrl { get; set; }
   public int AvailableStock{ get; set; }
   public int OrderedStock { get; set; }
   public List<Drug> CompatibleDrugs { get; set; } // Navigation property for compatibility

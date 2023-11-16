@@ -14,7 +14,7 @@ public class HomeopatijaContext : DbContext
     CartDrugs = Set<CartDrug>();
     MandatorDiseaseSymptoms = Set<MandatorDiseaseSymptom>();
     PossibleDiseaseSymptoms = Set<PossibleDiseaseSymptom>();
-    Faqs = Set<FAQ>();
+    Faqs = Set<Faq>();
     Reports = Set<Report>();
     Comments = Set<Comment>();
     Symptoms = Set<Symptom>();
@@ -31,14 +31,22 @@ public class HomeopatijaContext : DbContext
   public DbSet<DrugCompatibility> DrugCompatibilities { get; set; }
   public DbSet<OrderDrug> OrderDrugs { get; set; }
   public DbSet<CartDrug> CartDrugs { get; set; }
+  public DbSet<Comment> Comments{ get; set; }
+  public DbSet<Report> Reports{ get; set; }
   public DbSet<Symptom> Symptoms { get; set; }
   public DbSet<MandatorDiseaseSymptom> MandatorDiseaseSymptoms { get; set; }
   public DbSet<PossibleDiseaseSymptom> PossibleDiseaseSymptoms { get; set; }
-  public DbSet<FAQ> Faqs { get; set; }
-  public DbSet<Report> Reports { get; set; }
-  public DbSet<Comment> Comments { get; set; }
+  public DbSet<Faq> Faqs { get; set; }
   public DbSet<Payment> Payments { get; set; }
   public DbSet<PaymentMethod> PaymentMethods { get; set; }
-  public DbSet<Questionnaire> Questionnaires{ get; set; }
-  public DbSet<DiagnosisSymptom> DiagnosisSymptoms{ get; set; }
+  public DbSet<Questionnaire> Questionnaires { get; set; }
+  public DbSet<DiagnosisSymptom> DiagnosisSymptoms { get; set; }
+
+
+  protected override void OnModelCreating(ModelBuilder modelBuilder)
+  {
+    modelBuilder.Seed();
+  }
+
+
 }

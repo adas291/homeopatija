@@ -1,9 +1,9 @@
-@model Comment
+@model homeopatija.Entities.Comment
 
 <div comment-id=@Model.Id class="comment p-1 m-2">
   <div class="comment-header">
     <div>
-      @Html.DisplayFor(m=> m.Author)
+      @Html.DisplayFor(m=> m.User.Name)
     </div>
     <div class="d-flex flex-direction-row gap-2">
       @Html.DisplayFor(m=>m.CreationTime)

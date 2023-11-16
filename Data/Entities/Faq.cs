@@ -1,6 +1,6 @@
 namespace homeopatija.Entities;
 
-public class FAQ
+public class Faq
 {
   public int Id { get; set; }
   public string Question { get; set; }

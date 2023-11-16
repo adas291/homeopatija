@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace homeopatija.Migrations
 {
     [DbContext(typeof(HomeopatijaContext))]
-    [Migration("20231115222918_inti")]
+    [Migration("20231116132545_inti")]
     partial class inti
     {
         /// <inheritdoc />
@@ -53,17 +53,32 @@ namespace homeopatija.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime>("CreationTime")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("DrugId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DrugId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Comments");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Body = "Labai nesknus",
+                            CreationTime = new DateTime(2023, 11, 16, 15, 25, 45, 119, DateTimeKind.Local).AddTicks(9749),
+                            DrugId = 1,
+                            UserId = 1
+                        });
                 });
 
             modelBuilder.Entity("homeopatija.Entities.Diagnosis", b =>
@@ -161,6 +176,10 @@ namespace homeopatija.Migrations
                     b.Property<int?>("DrugId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("OrderedStock")
                         .HasColumnType("INTEGER");
 
@@ -176,6 +195,18 @@ namespace homeopatija.Migrations
                     b.HasIndex("DrugId");
 
                     b.ToTable("Drugs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AvailableStock = 1,
+                            Description = "Labai patikimas is db",
+                            ImageUrl = "~/imgs/v1.png",
+                            OrderedStock = 1,
+                            Price = 9.99m,
+                            Title = "Procetamolis is db"
+                        });
                 });
 
             modelBuilder.Entity("homeopatija.Entities.DrugCompatibility", b =>
@@ -199,7 +230,7 @@ namespace homeopatija.Migrations
                     b.ToTable("DrugCompatibilities");
                 });
 
-            modelBuilder.Entity("homeopatija.Entities.FAQ", b =>
+            modelBuilder.Entity("homeopatija.Entities.Faq", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -442,6 +473,7 @@ namespace homeopatija.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -466,6 +498,19 @@ namespace homeopatija.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "adress1",
+                            CreationDate = new DateTime(2023, 11, 16, 15, 25, 45, 119, DateTimeKind.Local).AddTicks(8803),
+                            Name = "DB User1",
+                            Passowrd = "$2a$11$pH/5.6EcEerGXPz7roT7YO4sRNL3OzZfAddMqOlzOSJdyrd2yPRsS",
+                            Phone = "86868",
+                            Surname = "Surname1",
+                            UserType = 1
+                        });
                 });
 
             modelBuilder.Entity("homeopatija.Entities.CartDrug", b =>
@@ -489,11 +534,19 @@ namespace homeopatija.Migrations
 
             modelBuilder.Entity("homeopatija.Entities.Comment", b =>
                 {
+                    b.HasOne("homeopatija.Entities.Drug", "Drug")
+                        .WithMany()
+                        .HasForeignKey("DrugId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("homeopatija.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Drug");
 
                     b.Navigation("User");
                 });

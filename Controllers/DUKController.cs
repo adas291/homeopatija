@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using homeopatija.Models;
 using System.Xml.Linq;
+using homeopatija.Entities;
 
 namespace homeopatija.Controllers;
 

@@ -1,102 +1,110 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using homeopatija.Models;
+using homeopatija.Dtos;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
+using AutoMapper;
+using homeopatija.Entities;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace homeopatija.Controllers;
 
 public class DrugController : Controller
 {
-    public List<Drug> DrugsTable;
+  // public List<Comment> comments = new List<Comment>()
+  //   {
+  //       new (){Id = 1, Body = "baisiai geras", Author = "Aldona0"},
+  //       new (){Id = 2, Body = "baisiai geras", Author = "Aldona1"},
+  //       new (){Id = 3, Body = "baisiai geras", Author = "Aldona2"},
+  //       new (){Id = 4, Body = "baisiai geras", Author = "Aldona3"},
+  //       new (){Id = 5, Body = "baisiai geras", Author = "Aldona4"},
+  //       new (){Id = 6, Body = "baisiai geras", Author = "Aldona5"},
+  //   };
+  private readonly HomeopatijaContext _db;
+  private readonly IMapper _mapper;
 
-    public DrugController()
+  public DrugController(HomeopatijaContext db, IMapper mapper)
+  {
+    _db = db;
+    _mapper = mapper;
+  }
+
+
+  public IActionResult Index()
+  {
+    var drugs = _db.Drugs.ToList();
+
+    return View(drugs);
+  }
+  
+  // public Drug? FindDrugByID(int id)
+  // {
+  //   return DrugsTable.Find(drug => drug.ID == id);
+  // }
+
+
+  [Route("[controller]/{id}")]
+  public IActionResult GetProductView(int id)
+  {
+    
+
+    var model = new DrugViewDto();
+
+    //this code should be in repo todo...
+    var drug = _db.Drugs.FirstOrDefault(x => x.Id == id);
+    if(drug == null)
     {
-        DrugsTable = new List<Drug>();
-
-        Random rand = new Random();
-        for (int i = 1; i <= 30; i++)
-        {
-            DrugsTable.Add(new() {
-                ID = i,
-                Title = $"Procentamolis{i}",
-                Price = ((float)rand.NextDouble())*20.0f + 0.99f,
-                ImgUrl = "/imgs/drugs/drug1.png"
-            });
-        }
+      return BadRequest("tokio vaisto nera :/");
     }
 
-    public List<Comment> comments = new List<Comment>()
-    {
-        new (){Id = 1, Body = "baisiai geras", Author = "Aldona0"},
-        new (){Id = 2, Body = "baisiai geras", Author = "Aldona1"},
-        new (){Id = 3, Body = "baisiai geras", Author = "Aldona2"},
-        new (){Id = 4, Body = "baisiai geras", Author = "Aldona3"},
-        new (){Id = 5, Body = "baisiai geras", Author = "Aldona4"},
-        new (){Id = 6, Body = "baisiai geras", Author = "Aldona5"},
-    };
+    model.Drug = drug;
+    model.Comments = _db.Comments.Include(x=>x.User).Where(x => x.DrugId == id).ToList();
 
-    public Drug? FindDrugByID(int id)
-    {
-        return DrugsTable.Find(drug => drug.ID == id);
-    }
+    return View("Product", model);
+  }
 
-    public IActionResult Index()
-    {
-        return View(DrugsTable);
-    }
+  [Route("[controller]/Table")]
+  public IActionResult GetDrugTableView()
+  {
+    return View("Table", _db.Drugs.ToList());
+  }
 
-    [Route("[controller]/{id}")]
-    public IActionResult GetProductView(int id)
-    {
-        Drug? drug = FindDrugByID(id);
-        Debug.Assert(drug != null);
+  // [Route("[controller]/Create")]
+  // public IActionResult CreateDrug()
+  // {
+  //   return View("Create");
+  // }
 
-        var model = new DrugView() { Drug = drug, Comments = comments };
+  // [Route("[controller]/Compatability")]
+  // public IActionResult ShowCompatabilityMatrix()
+  // {
+  //   return View("CompatabilityMatrix", DrugsTable);
+  // }
 
-        return View("Product", model);
-    }
+  // [Route("[controller]/Details/{id}")]
+  // public IActionResult DetailsDrug(int id)
+  // {
+  //   Drug? drug = FindDrugByID(id);
+  //   Debug.Assert(drug != null);
 
-    [Route("[controller]/Table")]
-    public IActionResult GetDrugTableView()
-    {
-        return View("Table", DrugsTable);
-    }
+  //   return View("Details", drug);
+  // }
 
-    [Route("[controller]/Create")]
-    public IActionResult CreateDrug()
-    {
-        return View("Create");
-    }
+  // [Route("[controller]/Edit/{id}")]
+  // public IActionResult EditDrug(int id)
+  // {
+  //   Drug? drug = FindDrugByID(id);
+  //   Debug.Assert(drug != null);
 
-    [Route("[controller]/Compatability")]
-    public IActionResult ShowCompatabilityMatrix()
-    {
-        return View("CompatabilityMatrix", DrugsTable);
-    }
+  //   return View("Edit", drug);
+  // }
 
-    [Route("[controller]/Details/{id}")]
-    public IActionResult DetailsDrug(int id)
-    {
-        Drug? drug = FindDrugByID(id);
-        Debug.Assert(drug != null);
+  // [Route("[controller]/Delete/{id}")]
+  // public IActionResult DeleteDrug(int id)
+  // {
+  //   Drug? drug = FindDrugByID(id);
+  //   Debug.Assert(drug != null);
 
-        return View("Details", drug);
-    }
-
-    [Route("[controller]/Edit/{id}")]
-    public IActionResult EditDrug(int id)
-    {
-        Drug? drug = FindDrugByID(id);
-        Debug.Assert(drug != null);
-
-        return View("Edit", drug);
-    }
-
-    [Route("[controller]/Delete/{id}")]
-    public IActionResult DeleteDrug(int id)
-    {
-        Drug? drug = FindDrugByID(id);
-        Debug.Assert(drug != null);
-
-        return View("Delete", drug);
-    }
+  //   return View("Delete", drug);
+  // }
 }

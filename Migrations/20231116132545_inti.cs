@@ -36,6 +36,7 @@ namespace homeopatija.Migrations
                     Title = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
                     Price = table.Column<decimal>(type: "TEXT", nullable: false),
+                    ImageUrl = table.Column<string>(type: "TEXT", nullable: false),
                     AvailableStock = table.Column<int>(type: "INTEGER", nullable: false),
                     OrderedStock = table.Column<int>(type: "INTEGER", nullable: false),
                     DrugId = table.Column<int>(type: "INTEGER", nullable: true)
@@ -296,13 +297,20 @@ namespace homeopatija.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Date = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Body = table.Column<string>(type: "TEXT", nullable: false),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    DrugId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_Drugs_DrugId",
+                        column: x => x.DrugId,
+                        principalTable: "Drugs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Comments_Users_UserId",
                         column: x => x.UserId,
@@ -415,6 +423,21 @@ namespace homeopatija.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Drugs",
+                columns: new[] { "Id", "AvailableStock", "Description", "DrugId", "ImageUrl", "OrderedStock", "Price", "Title" },
+                values: new object[] { 1, 1, "Labai patikimas is db", null, "~/imgs/v1.png", 1, 9.99m, "Procetamolis is db" });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Address", "CreationDate", "Name", "Passowrd", "Phone", "Surname", "UserType" },
+                values: new object[] { 1, "adress1", new DateTime(2023, 11, 16, 15, 25, 45, 119, DateTimeKind.Local).AddTicks(8803), "DB User1", "$2a$11$pH/5.6EcEerGXPz7roT7YO4sRNL3OzZfAddMqOlzOSJdyrd2yPRsS", "86868", "Surname1", 1 });
+
+            migrationBuilder.InsertData(
+                table: "Comments",
+                columns: new[] { "Id", "Body", "CreationTime", "DrugId", "UserId" },
+                values: new object[] { 1, "Labai nesknus", new DateTime(2023, 11, 16, 15, 25, 45, 119, DateTimeKind.Local).AddTicks(9749), 1, 1 });
+
             migrationBuilder.CreateIndex(
                 name: "IX_CartDrugs_DrugId",
                 table: "CartDrugs",
@@ -424,6 +447,11 @@ namespace homeopatija.Migrations
                 name: "IX_CartDrugs_OrderId",
                 table: "CartDrugs",
                 column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_DrugId",
+                table: "Comments",
+                column: "DrugId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_UserId",

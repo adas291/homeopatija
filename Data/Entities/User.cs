@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace homeopatija.Entities;
 
 public enum UserType
@@ -16,6 +18,8 @@ public class User
   public string Phone { get; set; }
   public string Address { get; set; }
   public UserType UserType { get; set; }
+
+  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
   public DateTime CreationDate { get; set; }
 
 }

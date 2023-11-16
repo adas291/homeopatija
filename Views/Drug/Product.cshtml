@@ -1,13 +1,13 @@
-@model homeopatija.Models.DrugView
+@model homeopatija.Dtos.DrugViewDto
 @{
   ViewData["Title"] = Model.Drug.Title;
 }
 
 <div class="drug-card mb-3">
-  <img width="200px" src="@Model.Drug.ImgUrl" alt="@Model.Drug.Title" class="product-image">
+  <img width="200px" src="@Model.Drug.ImageUrl" alt="@Model.Drug.Title" class="product-image">
   <h2>@Model.Drug.Title</h2>
   <p class="product-price">$@Model.Drug.Price</p>
-  <a href="/Product/Details/@Model.Drug.ID" class="product-details-link">Peržiūrėti</a>
+  <a href="/Product/Details/@Model.Drug.Id" class="product-details-link">Peržiūrėti</a>
 </div>
 
 
