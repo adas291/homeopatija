@@ -72,7 +72,7 @@ namespace homeopatija.Migrations
                         {
                             Id = 1,
                             Body = "Labai nesknus",
-                            CreationTime = new DateTime(2023, 11, 16, 15, 25, 45, 119, DateTimeKind.Local).AddTicks(9749),
+                            CreationTime = new DateTime(2023, 11, 20, 15, 49, 26, 826, DateTimeKind.Local).AddTicks(2844),
                             DrugId = 1,
                             UserId = 1
                         });
@@ -421,6 +421,9 @@ namespace homeopatija.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("CommentId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
 
@@ -434,6 +437,8 @@ namespace homeopatija.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
 
                     b.HasIndex("UserId");
 
@@ -501,9 +506,9 @@ namespace homeopatija.Migrations
                         {
                             Id = 1,
                             Address = "adress1",
-                            CreationDate = new DateTime(2023, 11, 16, 15, 25, 45, 119, DateTimeKind.Local).AddTicks(8803),
+                            CreationDate = new DateTime(2023, 11, 20, 15, 49, 26, 826, DateTimeKind.Local).AddTicks(1885),
                             Name = "DB User1",
-                            Passowrd = "$2a$11$pH/5.6EcEerGXPz7roT7YO4sRNL3OzZfAddMqOlzOSJdyrd2yPRsS",
+                            Passowrd = "$2a$11$wh3QWgBDUsB47eX72BhbNumEE4q7tIGfav6QKDGFFwwcm9MquWLn6",
                             Phone = "86868",
                             Surname = "Surname1",
                             UserType = 1
@@ -709,11 +714,19 @@ namespace homeopatija.Migrations
 
             modelBuilder.Entity("homeopatija.Entities.Report", b =>
                 {
+                    b.HasOne("homeopatija.Entities.Comment", "Comment")
+                        .WithMany()
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("homeopatija.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Comment");
 
                     b.Navigation("User");
                 });

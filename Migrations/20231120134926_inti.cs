@@ -383,11 +383,18 @@ namespace homeopatija.Migrations
                     ReportType = table.Column<int>(type: "INTEGER", nullable: false),
                     Date = table.Column<DateTime>(type: "TEXT", nullable: false),
                     IsReviewed = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CommentId = table.Column<int>(type: "INTEGER", nullable: false),
                     UserId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reports", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reports_Comments_CommentId",
+                        column: x => x.CommentId,
+                        principalTable: "Comments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Reports_Users_UserId",
                         column: x => x.UserId,
@@ -431,12 +438,12 @@ namespace homeopatija.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Address", "CreationDate", "Name", "Passowrd", "Phone", "Surname", "UserType" },
-                values: new object[] { 1, "adress1", new DateTime(2023, 11, 16, 15, 25, 45, 119, DateTimeKind.Local).AddTicks(8803), "DB User1", "$2a$11$pH/5.6EcEerGXPz7roT7YO4sRNL3OzZfAddMqOlzOSJdyrd2yPRsS", "86868", "Surname1", 1 });
+                values: new object[] { 1, "adress1", new DateTime(2023, 11, 20, 15, 49, 26, 826, DateTimeKind.Local).AddTicks(1885), "DB User1", "$2a$11$wh3QWgBDUsB47eX72BhbNumEE4q7tIGfav6QKDGFFwwcm9MquWLn6", "86868", "Surname1", 1 });
 
             migrationBuilder.InsertData(
                 table: "Comments",
                 columns: new[] { "Id", "Body", "CreationTime", "DrugId", "UserId" },
-                values: new object[] { 1, "Labai nesknus", new DateTime(2023, 11, 16, 15, 25, 45, 119, DateTimeKind.Local).AddTicks(9749), 1, 1 });
+                values: new object[] { 1, "Labai nesknus", new DateTime(2023, 11, 20, 15, 49, 26, 826, DateTimeKind.Local).AddTicks(2844), 1, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CartDrugs_DrugId",
@@ -544,6 +551,11 @@ namespace homeopatija.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reports_CommentId",
+                table: "Reports",
+                column: "CommentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reports_UserId",
                 table: "Reports",
                 column: "UserId");
@@ -554,9 +566,6 @@ namespace homeopatija.Migrations
         {
             migrationBuilder.DropTable(
                 name: "CartDrugs");
-
-            migrationBuilder.DropTable(
-                name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "DiagnosisSymptoms");
@@ -589,9 +598,6 @@ namespace homeopatija.Migrations
                 name: "Diagnosis");
 
             migrationBuilder.DropTable(
-                name: "Drugs");
-
-            migrationBuilder.DropTable(
                 name: "Orders");
 
             migrationBuilder.DropTable(
@@ -601,7 +607,13 @@ namespace homeopatija.Migrations
                 name: "Symptoms");
 
             migrationBuilder.DropTable(
+                name: "Comments");
+
+            migrationBuilder.DropTable(
                 name: "Disease");
+
+            migrationBuilder.DropTable(
+                name: "Drugs");
 
             migrationBuilder.DropTable(
                 name: "Users");

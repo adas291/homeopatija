@@ -9,5 +9,5 @@ public class Comment
   public User User { get; set; }
   public DateTime CreationTime { get; set; } = DateTime.Now;
   public int DrugId { get; set; }
-  public Drug Drug { get; set; }
+  public Drug? Drug { get; set; }
 }

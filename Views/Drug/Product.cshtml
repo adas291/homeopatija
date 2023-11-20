@@ -11,31 +11,33 @@
 </div>
 
 
-<dialog id="report-comment-modal">
-  <form action="/report/comment" method="post">
-    <input type="hidden" id="comment-id-input" name="comment-id" value="">
+<dialog id="reportCommentModal">
+  <form id="reportForm" action="/Comment/Report" method="post">
+    <input type="hidden" id="commentReportInput" name="CommentId" value="">
     <div>Pranešti apie netinkamą komentarą</div>
-    <button class="btn btn-outline-danger" id="cancel-report-btn">Atšaukti</button>
-    <button class="btn btn-success" id="submit-report-btn">Pranešti</button>
-  </form>
-</dialog>
-
-<dialog id="confirm-modal">
-  <form action="/comment/delete" method="post">
-    <input type="hidden" id="comment-id-input" name="comment-id" value="">
-    <div id="confirmation-message">Ar tikrai?</div>
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-outline-danger" id="cancel-btn">Atšaukti</button>
-      <button class="btn btn-success" id="confirm-btn">Taip</button>
+    <br>
+    <div class="form-group">
+      <label class="mb-3" for="reportType">Komentaro tipas</label>
+      <select class="mb-3 form-control" id="reportType" name="ReportType">
+        @foreach (var reportType in Enum.GetValues(typeof(homeopatija.Entities.ReportType)))
+        {
+          <option value="@((int)reportType)">@reportType</option>
+        }
+      </select>
     </div>
+
+    <button class="btn btn-outline-danger" id="cancel-report-btn">Atšaukti</button>
+    <button class="btn btn-success" id="submitReportBtn">Pranešti</button>
   </form>
 </dialog>
 
-<dialog id="edit-comment-modal">
-  <form action="/report/comment" method="post">
-    <input type="hidden" id="comment-id-input" name="comment-id" value="">
+
+<dialog id="editCommentModal">
+  <form action="/Comment/Update" id="commentEditForm" method="post">
+    <input type="hidden" id="commentIdInput" name="Id" value="">
+    <input type="hidden" id="drugId" name="DrugId" value="@Model.Drug.Id">
     <div>Redaguoti komentarą</div>
-    <textarea class="form-control rounded-0" id="update-comment-body-area" rows="3"></textarea>
+    <textarea class="form-control rounded-0" name="Body" id="update-comment-body-area" rows="3"></textarea>
     <button class="btn btn-outline-danger" id="cancel-edit-btn">Atšaukti</button>
     <button class="btn btn-success" id="submit-updated-comment-btn">Atnaujinti komentarą</button>
   </form>
@@ -44,10 +46,22 @@
 
 <div id="comment-section">
 
-  <form class="m-3" method="post" action="/report">
+  <form class="m-3" method="post" id="newCommentForm" action="/Comment/Create">
+    @Html.HiddenFor(m=>m.Drug.Id)
+
+
+    @* kai bus padaryta authentikacija *@
+    @* @if(User.Identity.IsAuthenticated)
+    {
+    <input type="hidden" name="userId" value="@User.Identity.Name" />
+    } *@
+
+    @Html.Hidden("UserId", 1)
+    @Html.Hidden("DrugId", Model.Drug.Id)
+
     <div class="form-group">
       <label class="h3" for="comment-body">Rašyti komentarą</label>
-      <textarea class="form-control rounded-0" id="comment-body" rows="3"></textarea>
+      @Html.TextArea("Body", new {@class="form-control rounded-0", @placeholder = "Rašykite komentaro tekstą"})
     </div>
     <button id="submit-comment" class="btn btn-primary float-right" type="submit">Komentuoti</button>
   </form>
@@ -62,31 +76,13 @@
 
 <script>
 
-  const notification = document.getElementById("notification")
-  const reportModal = document.getElementById("report-comment-modal")
-  const editCommentModal = document.getElementById("edit-comment-modal")
-
-  function showNotification(message) {
-    notification.style.display = "block";
-    notification.querySelector("#notification-body").textContent = message
-
-    setTimeout(() => {
-      notification.style.display = "none"
-    }, 3000)
-
-  }
-
-  //------comment submit ------------
-  const commentButton = document.querySelector("#submit-comment")
-  commentButton.addEventListener("click", (event) => {
-    event.preventDefault()
-    showNotification("Komentaras išsaugotas")
-
-  })
+  const reportModal = document.getElementById("reportCommentModal")
+  const editCommentModal = document.getElementById("editCommentModal")
 
   //------comment reporting ---------
+
   const commentSection = document.querySelector("#comment-section");
-  const commentIdInput = document.getElementById("comment-id-input");
+  const commentIdInput = document.getElementById("commentIdInput");
 
   //-------- comment editing -----------
 
@@ -119,24 +115,8 @@
 
   const submitEditedCommentButton = document.getElementById("submit-updated-comment-btn")
 
-  submitEditedCommentButton.addEventListener("click", (event) => {
-    event.preventDefault()
-    editCommentModal.close()
-
-    showNotification("Komentaras nr. " + commentIdInput.value + " atnaujintas");
-
-  })
 
   // -----------comment delete -----------------
-
-
-  const confirmModal = document.getElementById("confirm-modal")
-  confirm.showModal
-
-  const cancelButton = document.getElementById("cancel-btn")
-  const confirmButton = document.getElementById("confirm-btn")
-  const confirmationMessage = document.getElementById("confirmation-message")
-
   commentSection.addEventListener("click", (event) => {
 
     if (!event.target) {
@@ -144,36 +124,59 @@
     }
 
     const commentId = event.target.getAttribute("data-comment-id");
-    commentIdInput.value = commentId
-
 
     if (event.target.hasAttribute("data-comment-delete")) {
-      confirmationMessage.innerText = "Ar tikrai norite ištrinti komentarą?"
-      confirmModal.showModal()
-  @* let removedComment = document.querySelector("[comment-id]")
-        commentSection.removeChild(removedComment) *@
+      if (confirm("Ar tikrai norite ištrinti komentarą?")) {
+        fetch("/Comments/" + commentId, { method: 'DELETE' })
+          .then(res => {
+            if (res.ok) {
+              return res.text().then(data => data)
+            }
+          })
+          .then(data => {
+            console.log(data)
+            let removedComment = document.querySelector("[comment-id]")
+            commentSection.removeChild(removedComment)
+          })
+          .catch(error => console.error("Error: ", error))
+      }
     }
 
     if (event.target.hasAttribute("data-comment-report")) {
-      confirmationMessage.innerText = "Ar tikrai manote, kad komentaras yra netinkamas?"
-      confirmModal.showModal()
-  @* let removedComment = document.querySelector("[comment-id]")
-        commentSection.removeChild(removedComment) *@
+      const reportCommentInput = document.getElementById("commentReportInput")
+      reportCommentInput.value = commentId
+      reportModal.showModal()
     }
 
 
 
   });
 
-  cancelButton.addEventListener("click", (event) => {
+  const reportBtn = document.getElementById("submitReportBtn")
+  const reportForm = document.getElementById("reportForm")
+  reportBtn.addEventListener('click', async (event) => {
     event.preventDefault()
-    confirmModal.close()
-  })
-  confirmButton.addEventListener("click", (event) => {
-    event.preventDefault()
+    reportModal.close()
 
-    confirmModal.close()
-    showNotification("Pasirinkimas išsaugotas")
+    const formData = new FormData(reportForm);
+
+    try {
+      const response = await fetch("/Comment/Report", {
+        method: 'POST',
+        body: formData,
+      });
+
+
+      if (response.ok) {
+        console.log("Reported successfully");
+        alert("Pranešimas išsiųstas administratoriui")
+      } else {
+        alert("Nepavyko išsiųsti pranešimo")
+      }
+    } catch (error) {
+      console.error("Error: ", error);
+    }
+
   })
 
 

@@ -43,7 +43,7 @@ public class DrugController : Controller
   // }
 
 
-  [Route("[controller]/{id}")]
+  [Route("/Drug/{id}")]
   public IActionResult GetProductView(int id)
   {
     
@@ -58,7 +58,12 @@ public class DrugController : Controller
     }
 
     model.Drug = drug;
-    model.Comments = _db.Comments.Include(x=>x.User).Where(x => x.DrugId == id).ToList();
+    model.Comments = _db.Comments
+                                .Where(x => x.DrugId == id)
+                                .Include(x=>x.User)
+                                .OrderByDescending(x=>x.CreationTime)
+                                .ToList();
+
 
     return View("Product", model);
   }

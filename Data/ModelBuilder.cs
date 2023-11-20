@@ -34,7 +34,7 @@ public static class ModelBuilderExtensions
         Title = "Procetamolis is db",
         Description = "Labai patikimas is db",
         Price = (decimal)9.99,
-        ImageUrl = "~/imgs/v1.png",
+        ImageUrl = "~/imgs/drugs/drug1.png",
         OrderedStock = 1,
         AvailableStock = 1,
       }
