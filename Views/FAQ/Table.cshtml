@@ -1,4 +1,4 @@
-﻿@model IEnumerable<homeopatija.Models.DUK>
+﻿@model IEnumerable<homeopatija.Entities.Faq>
 
 @{
     ViewData["Title"] = "Table";
@@ -13,16 +13,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.eiliskumas)
+                @Html.DisplayNameFor(model => model.OrderId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.klausimas)
+                @Html.DisplayNameFor(model => model.Question)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.atsakymas)
+                @Html.DisplayNameFor(model => model.Answer)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.sukurimo_data)
+                @Html.DisplayNameFor(model => model.CreationDate)
             </th>
             <th></th>
         </tr>
@@ -32,19 +32,19 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.eiliskumas)
+                    @Html.DisplayFor(modelItem => item.OrderId)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.klausimas)
+                    @Html.DisplayFor(modelItem => item.Question)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.atsakymas)
+                    @Html.DisplayFor(modelItem => item.Answer)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.sukurimo_data)
+                    @Html.DisplayFor(modelItem => item.CreationDate)
                 </td>
                 <td>
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
                 </td>
             </tr>
         }
