@@ -15,7 +15,7 @@ public class FAQController : Controller
     {
         _db = db;
     }
-
+    
     [Route("Create")]
     public IActionResult Create()
     {
@@ -46,6 +46,7 @@ public class FAQController : Controller
     {
         return View("Table", _db.Faqs.ToList());
     }
+    
 
     [Route("Delete")]
     public IActionResult Delete(int id)

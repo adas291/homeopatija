@@ -1,4 +1,4 @@
-﻿@model homeopatija.Models.Disease
+﻿@model homeopatija.Entities.Disease
 
 @{
     ViewData["Title"] = "Create";
@@ -10,17 +10,17 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="CreateDisease">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cause" class="control-label"></label>
-                <input asp-for="Cause" class="form-control" />
-                <span asp-validation-for="Cause" class="text-danger"></span>
+                <label asp-for="Causes" class="control-label"></label>
+                <input asp-for="Causes" class="form-control" />
+                <span asp-validation-for="Causes" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
@@ -33,7 +33,7 @@
                 <span asp-validation-for="Treatment" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="CreateDisease" class="btn btn-primary" />
             </div>
         </form>
     </div>

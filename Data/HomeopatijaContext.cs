@@ -11,6 +11,7 @@ public class HomeopatijaContext : DbContext
     Orders = Set<Order>();
     Users = Set<User>();
     Drugs = Set<Drug>();
+    Diseases = Set<Disease>();
     CartDrugs = Set<CartDrug>();
     MandatorDiseaseSymptoms = Set<MandatorDiseaseSymptom>();
     PossibleDiseaseSymptoms = Set<PossibleDiseaseSymptom>();
@@ -27,6 +28,7 @@ public class HomeopatijaContext : DbContext
   public DbSet<Order> Orders { get; set; }
   public DbSet<User> Users { get; set; }
   public DbSet<Drug> Drugs { get; set; }
+  public DbSet<Disease> Diseases { get; set; }
 
   public DbSet<DrugCompatibility> DrugCompatibilities { get; set; }
   public DbSet<OrderDrug> OrderDrugs { get; set; }
