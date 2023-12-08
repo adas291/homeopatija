@@ -7,6 +7,6 @@
 <div class="drug-grid">
     @foreach (var product in Model)
     {
-        Html.RenderPartial("_DrugCardPartial", product);
+      @await Html.PartialAsync("_DrugCardPartial", product)
     }
 </div>

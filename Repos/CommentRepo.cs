@@ -1,46 +1,73 @@
 namespace homeopatija.Repos;
 using homeopatija.Dtos;
 using homeopatija.Entities;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
 
-public static class CommentRepo
+public class CommentRepo
 {
-  public static int UpdateComment(HomeopatijaContext db, Comment updatedComment)
+  private readonly EmailRepo _email;
+  private readonly IConfiguration _config;
+  private readonly HomeopatijaContext _dbc;
+  public CommentRepo(EmailRepo email, IConfiguration config, HomeopatijaContext dbc)
   {
-    var existingComment = db.Comments.Find(updatedComment.Id);
+    _email = email;
+    _config = config;
+    _dbc = dbc;
+  }
+
+  public int UpdateComment(Comment updatedComment)
+  {
+    var existingComment = _dbc.Comments.Find(updatedComment.Id);
 
     if (existingComment != null)
     {
       existingComment.Body = updatedComment.Body;
       existingComment.CreationTime = updatedComment.CreationTime;
-      return db.SaveChanges();
+      return _dbc.SaveChanges();
     }
     return 0;
   }
 
-  public static int CreateReport(HomeopatijaContext db, Report report)
+  public async Task<bool> CreateReport(Report report)
   {
-    db.Reports.Add(report);
-    return db.SaveChanges();
+    _dbc.Reports.Add(report);
+    await _dbc.SaveChangesAsync();
+
+    var newReport = await _dbc.Reports
+        .Include(r => r.Comment) 
+        .Include(r => r.User)    
+        .Include(r => r.Comment.Drug)
+        .FirstOrDefaultAsync(r => r.Id == report.Id);
+
+    if (newReport != null)
+    {
+      string body = @$"Vartotojas, {report.Comment.User.Name} pranešė apie netinkamą komentarą. Priežastis: {Enum.GetName(report.ReportType)} Produktas kurio puslapyje yra komentaras: {report.Comment.Drug?.Title}";
+      var result = _email.SendEmail(_config["Email:AdminAddress"], "Netinkamo komentaro pranešimas", body);
+      return true;
+    }
+
+    return false;
   }
 
-  public static int CreateComment(HomeopatijaContext db, Comment comment)
+
+  public int CreateComment(Comment comment)
   {
     comment.Drug = null;
     Console.WriteLine(comment.Drug is not null);
-    db.Comments.Add(comment);
-    return db.SaveChanges();
+    _dbc.Comments.Add(comment);
+    return _dbc.SaveChanges();
   }
 
-  public static int Delete(HomeopatijaContext db, int id)
+  public int Delete(int id)
   {
-    var result = db.Comments.Find(id);
+    var result = _dbc.Comments.Find(id);
     if (result != null)
     {
-      db.Comments.Remove(result);
+      _dbc.Comments.Remove(result);
     }
-    return db.SaveChanges();
+    return _dbc.SaveChanges();
   }
-
-
-
 }

@@ -33,7 +33,7 @@
 
 
 <dialog id="editCommentModal">
-  <form action="/Comment/Update" id="commentEditForm" method="post">
+  <form action="/Comments/Update" id="commentEditForm" method="post">
     <input type="hidden" id="commentIdInput" name="Id" value="">
     <input type="hidden" id="drugId" name="DrugId" value="@Model.Drug.Id">
     <div>Redaguoti komentarą</div>
@@ -46,7 +46,7 @@
 
 <div id="comment-section">
 
-  <form class="m-3" method="post" id="newCommentForm" action="/Comment/Create">
+  <form class="m-3" method="post" id="newCommentForm" action="/Comments/Create">
     @Html.HiddenFor(m=>m.Drug.Id)
 
 
@@ -147,13 +147,11 @@
       reportCommentInput.value = commentId
       reportModal.showModal()
     }
-
-
-
   });
 
   const reportBtn = document.getElementById("submitReportBtn")
   const reportForm = document.getElementById("reportForm")
+
   reportBtn.addEventListener('click', async (event) => {
     event.preventDefault()
     reportModal.close()
@@ -161,11 +159,10 @@
     const formData = new FormData(reportForm);
 
     try {
-      const response = await fetch("/Comment/Report", {
+      const response = await fetch("/Comments/Report", {
         method: 'POST',
         body: formData,
       });
-
 
       if (response.ok) {
         console.log("Reported successfully");
@@ -176,8 +173,6 @@
     } catch (error) {
       console.error("Error: ", error);
     }
-
   })
-
 
 </script>

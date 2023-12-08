@@ -1,4 +1,5 @@
 using homeopatija;
+using homeopatija.Repos;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,11 +9,18 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
+
+
 builder.Services.AddDbContext<HomeopatijaContext>(options =>
 {
   options.UseSqlite(builder.Configuration["ConnectionStrings:Default"]);
-});
+}, ServiceLifetime.Singleton);
 
+builder.Services.AddSingleton<EmailRepo>();
+builder.Services.AddScoped<CommentRepo>();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 var app = builder.Build();
 

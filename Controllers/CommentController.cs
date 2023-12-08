@@ -7,13 +7,15 @@ using homeopatija.Entities;
 using homeopatija.Repos;
 
 
-[Route("Comment")]
+[Route("Comments")]
 public class CommentsController : Controller
 {
   private readonly HomeopatijaContext _db;
-  public CommentsController(HomeopatijaContext db)
+  private readonly CommentRepo _commentRepo;
+  public CommentsController(HomeopatijaContext db, CommentRepo commentRepo)
   {
     _db = db;
+    _commentRepo = commentRepo;
   }
 
   [HttpPost("Update")]
@@ -22,7 +24,7 @@ public class CommentsController : Controller
     //to be fixed when authentication implemented
     comment.UserId = 1;
 
-    var result = CommentRepo.UpdateComment(_db, comment);
+    var result = _commentRepo.UpdateComment(comment);
     if(result == 1)
     {
       TempData["StatusMessage"] = "Komentaras atnaujintas sėkmingai";
@@ -37,13 +39,11 @@ public class CommentsController : Controller
   [HttpPost("Create")]
   public IActionResult Create(Comment comment)
   {
-    var result = CommentRepo.CreateComment(_db, comment);
+    var result = _commentRepo.CreateComment(comment);
     if(result == 1)
     {
       TempData["StatusMessage"] = "Komentaras sukurtas sėkmingai";
-      // return Redirect($"/drug/{comment.DrugId}");
       return RedirectToAction("GetProductView", "Drug", new { id = comment.DrugId});
-      // return Ok();
     }
     else {
       TempData["StatusMessage"] = "Komentaras nebuvo sukurtas";
@@ -55,7 +55,7 @@ public class CommentsController : Controller
   [HttpDelete("{id}")]
   public IActionResult Delete(int id)
   {
-    var result = CommentRepo.Delete(_db, id);
+    var result = _commentRepo.Delete(id);
     if(result == 1)
     {
       TempData["StatusMessage"] = "Komentaras pašalintas sėkmingai";
@@ -68,12 +68,21 @@ public class CommentsController : Controller
   }
 
   [HttpPost("Report")]
-  public IActionResult Report(Report report)
+  public async Task<IActionResult> Report(Report report)
   {
     report.User = null;
-    report.UserId = 1;
-    var result = CommentRepo.CreateReport(_db, report);
-    if(result == 1)
+
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    if (userId != null) {
+      report.UserId = Convert.ToInt32(userId);
+    }
+    else {
+      report.UserId = 1;
+    }
+
+    var created = await _commentRepo.CreateReport(report);
+
+    if(created)
     {
       // TempData["StatusMessage"] = "Pranešimas išsiųstas administratoriui";
       // return RedirectToAction("GetProductView", "Drug", new { id = report.CommentId});
