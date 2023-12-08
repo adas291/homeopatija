@@ -9,45 +9,72 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Causes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Treatment)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Causes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Treatment)
-            </td>
-            <td>
-                    @Html.ActionLink("Edit", "Edit", new {  id=item.Id }) |
-                @Html.ActionLink("Details", "Details", new {  id=item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new {  id=item.Id  })
-            </td>
-        </tr>
+
+<div class="row">
+    <div class="col-md-3">
+        <form id="symptomForm">
+            <h3>Symptoms</h3>
+            @foreach (var symptom in ViewBag.Symptoms)
+            {
+                <div class="symptom" data-symptomid="@symptom.Id">
+                    <input type="checkbox" name="selectedSymptomIds" value="@symptom.Id"> @symptom.Title
+                </div>
+            }
+            <button type="submit">Filter</button>
+        </form>
+    </div>
+    <div class="col-md-9">
+        <div id="diseaseList">
+            <table class="table">
+                <!-- Table header -->
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Causes</th>
+                        <th>Description</th>
+                        <th>Treatment</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <!-- Table body -->
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Causes)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Treatment)</td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                                @Html.ActionLink("Details", "Details", new { id = item.Id })
+                                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $('#symptomForm').submit(function (e) {
+                e.preventDefault();
+
+                var formData = $(this).serialize();
+                $.ajax({
+                    url: '@Url.Action("FilterBySymptoms", "Disease")',
+                    type: 'POST',
+                    data: formData,
+                    success: function (result) {
+                        $('#diseaseList').html(result);
+                    }
+                });
+            });
+        });
+    </script>
 }
-    </tbody>
-</table>

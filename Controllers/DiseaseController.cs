@@ -98,6 +98,8 @@ public class DiseaseController : Controller
    [Route("Table")]
     public IActionResult Index()  
     {
+        var symptoms = _db.Symptoms.ToList();
+        ViewBag.Symptoms = symptoms;
         return View("Table", _db.Diseases.ToList());
     }
 
@@ -129,17 +131,70 @@ public class DiseaseController : Controller
         return View("Table", _db.Diseases.ToList());
     }
 
-    [Route("Details/{id}")] // neveikia
-    public IActionResult DetailsDisease(int id)
+    [Route("Details/{id}")]
+    public IActionResult Details(int id)
     {
         var disease = _db.Diseases.FirstOrDefault(d => d.Id == id);
 
         if (disease == null)
         {
-            return NotFound(); // Return a 404 xd
+            return NotFound();
         }
 
-        return View("Details", disease);
+        var mandatorySymptomIds = _db.MandatorDiseaseSymptoms
+            .Where(mds => mds.DiseaseId == id)
+            .Select(mds => mds.SymptomId)
+            .ToList();
+
+        var optionalSymptomIds = _db.PossibleDiseaseSymptoms
+            .Where(pds => pds.DiseaseId == id)
+            .Select(pds => pds.SymptomId)
+            .ToList();
+
+        var mandatorySymptoms = _db.Symptoms.Where(s => mandatorySymptomIds.Contains(s.Id)).ToList();
+        var optionalSymptoms = _db.Symptoms.Where(s => optionalSymptomIds.Contains(s.Id)).ToList();
+
+        ViewBag.MandatorySymptoms = mandatorySymptoms;
+        ViewBag.OptionalSymptoms = optionalSymptoms;
+
+        return View(disease);
     }
-     
+
+
+    [HttpPost("Table")]
+    [HttpPost]
+    public IActionResult FilterBySymptoms(List<int> selectedSymptomIds)
+    {
+
+        if (selectedSymptomIds == null || selectedSymptomIds.Count == 0)
+        {
+            // If no symptoms are selected, return all diseases
+            var allDiseases = _db.Diseases.ToList();
+            return PartialView("_DiseasesTablePartial", allDiseases);
+        }
+
+        var selectedSymptomsCount = selectedSymptomIds.Count;
+
+        var possibleDiseases = _db.PossibleDiseaseSymptoms
+            .Where(pds => selectedSymptomIds.Contains(pds.SymptomId))
+            .GroupBy(pds => pds.DiseaseId)
+            .Where(group => group.Count() == selectedSymptomsCount)
+            .Select(group => group.Key)
+            .ToList();
+
+        var mandatoryDiseases = _db.MandatorDiseaseSymptoms
+            .Where(mds => selectedSymptomIds.Contains(mds.SymptomId))
+            .GroupBy(mds => mds.DiseaseId)
+            .Where(group => group.Count() == selectedSymptomsCount)
+            .Select(group => group.Key)
+            .ToList();
+
+        var filteredDiseases = _db.Diseases
+            .Where(d => possibleDiseases.Contains(d.Id) || mandatoryDiseases.Contains(d.Id))
+            .ToList();
+
+        return PartialView("_DiseasesTablePartial", filteredDiseases);
+    }
+
+
 }
