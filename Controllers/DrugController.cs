@@ -2,6 +2,7 @@ using homeopatija.Dtos;
 using homeopatija.Entities;
 using homeopatija.Repos;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace homeopatija.Controllers;
 
@@ -108,6 +109,36 @@ public class DrugController : Controller
         int id = int.Parse(Request.Form["Id"]);
 
         DrugRepo.Delete(db, id);
+        return Redirect("Table");
+    }
+
+    [Route("Drug/Compatability")]
+    public IActionResult CompatabilityShow()
+    {
+        return View("CompatabilityMatrix", new
+        {
+            drugs = DrugRepo.ListAll(db),
+            compatibilities = DrugRepo.ListCompatibilities(db)
+        });
+    }
+
+    [HttpPost("Drug/SaveCompatability")]
+    public IActionResult SaveCompatability()
+    {
+        var compatibilities = new List<Tuple<int, int>>();
+        foreach (var key in Request.Form.Keys)
+        {
+            if (key.StartsWith("__")) continue;
+
+            var parts = key.Split("-");
+            Debug.Assert(parts.Length == 2);
+            int idA = int.Parse(parts[0]);
+            int idB = int.Parse(parts[1]);
+            compatibilities.Add(Tuple.Create(idA, idB));
+        }
+
+        DrugRepo.UpdateCompatibilities(db, compatibilities);
+
         return Redirect("Table");
     }
 }
