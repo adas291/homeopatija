@@ -1,0 +1,37 @@
+﻿@model homeopatija.Entities.Question
+
+@{
+    ViewData["Title"] = "AskQuestion";
+}
+
+<style>
+    body{
+        text-align: center;
+    }
+
+    .tarot_image {
+        height: 50vh;
+    }
+
+    .col-md-4{
+        width: 100%;
+    }
+</style>
+
+<h1>Jūsų atsakymas:</h1>
+<div class="row">
+    <div class="col-md-4">
+        <img class="tarot_image" src="@Html.Raw(Model.question)" alt="Taro korta">
+    </div>
+</div>
+
+<hr />
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

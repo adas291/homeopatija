@@ -1,28 +1,42 @@
-﻿@model homeopatija.Models.DUK
+﻿@model homeopatija.Entities.Question
 
 @{
     ViewData["Title"] = "Klausimynas";
 }
 
-<h1>Atsakykite į klausimus:</h1>
-
-<h4>Ar jaučiate galvos skausmą?</h4>
+<h1>Atsakykite į klausimą:</h1>
+<br>
+<br>
 
 <div class="row">
     <div class="col-md-4">
-        <form class="form" method="post">
-            <input type="submit" value="Taip" asp-page-handler="Button1" />
-            <input type="submit" value="Ne" asp-page-handler="Button2" />
+        <form asp-action="AnswerQuestionaire" method="post">
+            <input type="hidden" asp-for="question" />
+            <h3>@Model.question</h3>
+            <input type="hidden" id="selectedAnswer" name="answer" />
+            <button type="button" class="btn btn-success" onclick="selectAnswer('Yes')">Taip</button>
+            <button type="button" class="btn btn-danger" onclick="selectAnswer('No')">Ne</button>
+            <br>
+            <br>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Patvirtinti</button>
+            </div>
         </form>
     </div>
 </div>
 
 <hr />
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Grįžti</a>
 </div>
 
 @section Scripts {
+    <script>
+        function selectAnswer(answer) {
+            document.getElementById('selectedAnswer').value = answer;
+        }
+    </script>
+
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

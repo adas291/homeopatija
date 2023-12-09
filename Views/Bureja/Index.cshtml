@@ -1,4 +1,4 @@
-@model homeopatija.Models.DUK
+@model homeopatija.Entities.Question
 
 @{
     ViewData["Title"] = "Homeopatija";
@@ -30,9 +30,17 @@
 
     <img class="wizard_image" src="imgs/wizard.png" alt="dėdė burtininkas">
     <br>
-    <textarea>Jūsų klausimas</textarea>
+    <form asp-action="AskQuestion">
+        <div class="form-group">
+            <input asp-for="question" class="form-control" placeholder="Klauskite klausimo..." />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Klausti" class="btn btn-primary" />
+        </div>
+    </form>
     <br>
-    <button>Klausti</button>
+    <a asp-action="Horoscope">Sužinoti horoskopą</a>
+    <br>
     <a asp-action="Klausimynas">Pradėti klausimyną</a>
 </div>
 
