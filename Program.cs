@@ -6,10 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddLocalization();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
-
-
 
 builder.Services.AddDbContext<HomeopatijaContext>(options =>
 {

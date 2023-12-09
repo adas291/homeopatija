@@ -18,11 +18,13 @@ public class DiseaseRepo
         }
         return 0;
     }
+
     public static int CreateDisease(HomeopatijaContext db, Disease disease)
     {
         db.Diseases.Add(disease);
         return db.SaveChanges();
     }
+
     public static int Delete(HomeopatijaContext db, int id)
     {
         var result = db.Diseases.Find(id);

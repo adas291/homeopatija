@@ -1,115 +1,113 @@
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using homeopatija.Dtos;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
-using AutoMapper;
 using homeopatija.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using homeopatija.Repos;
+using Microsoft.AspNetCore.Mvc;
 
 namespace homeopatija.Controllers;
 
 public class DrugController : Controller
 {
-  // public List<Comment> comments = new List<Comment>()
-  //   {
-  //       new (){Id = 1, Body = "baisiai geras", Author = "Aldona0"},
-  //       new (){Id = 2, Body = "baisiai geras", Author = "Aldona1"},
-  //       new (){Id = 3, Body = "baisiai geras", Author = "Aldona2"},
-  //       new (){Id = 4, Body = "baisiai geras", Author = "Aldona3"},
-  //       new (){Id = 5, Body = "baisiai geras", Author = "Aldona4"},
-  //       new (){Id = 6, Body = "baisiai geras", Author = "Aldona5"},
-  //   };
-  private readonly HomeopatijaContext _db;
-  private readonly IMapper _mapper;
+    private readonly HomeopatijaContext db;
 
-  public DrugController(HomeopatijaContext db, IMapper mapper)
-  {
-    _db = db;
-    _mapper = mapper;
-  }
-
-
-  public IActionResult Index()
-  {
-    var drugs = _db.Drugs.ToList();
-
-    return View(drugs);
-  }
-  
-  // public Drug? FindDrugByID(int id)
-  // {
-  //   return DrugsTable.Find(drug => drug.ID == id);
-  // }
-
-
-  [Route("/Drug/{id}")]
-  public IActionResult GetProductView(int id)
-  {
-    
-
-    var model = new DrugViewDto();
-
-    //this code should be in repo todo...
-    var drug = _db.Drugs.FirstOrDefault(x => x.Id == id);
-    if(drug == null)
+    public DrugController(HomeopatijaContext db)
     {
-      return BadRequest("tokio vaisto nera :/");
+        this.db = db;
     }
 
-    model.Drug = drug;
-    model.Comments = _db.Comments
-                                .Where(x => x.DrugId == id)
-                                .Include(x=>x.User)
-                                .OrderByDescending(x=>x.CreationTime)
-                                .ToList();
+    [Route("/Drug/{id}")]
+    public IActionResult GetProductView(int id)
+    {
+        var drug = DrugRepo.FindByID(db, id);
+        if (drug == null) return Redirect("/404");
 
+        var model = new DrugViewDto();
+        model.Drug = drug;
+        model.Comments = DrugRepo.FindCommentsByDrugID(db, id);
 
-    return View("Product", model);
-  }
+        return View("Product", model);
+    }
 
-  [Route("[controller]/Table")]
-  public IActionResult GetDrugTableView()
-  {
-    return View("Table", _db.Drugs.ToList());
-  }
+    public IActionResult Index()
+    {
+        return View(DrugRepo.ListAll(db));
+    }
 
-  // [Route("[controller]/Create")]
-  // public IActionResult CreateDrug()
-  // {
-  //   return View("Create");
-  // }
+    [Route("Drug/Table")]
+    public IActionResult GetDrugTableView()
+    {
+        return View("Table", DrugRepo.ListAll(db));
+    }
 
-  // [Route("[controller]/Compatability")]
-  // public IActionResult ShowCompatabilityMatrix()
-  // {
-  //   return View("CompatabilityMatrix", DrugsTable);
-  // }
+    [Route("Drug/Create")]
+    public IActionResult CreateDrugView()
+    {
+      return View("Create");
+    }
 
-  // [Route("[controller]/Details/{id}")]
-  // public IActionResult DetailsDrug(int id)
-  // {
-  //   Drug? drug = FindDrugByID(id);
-  //   Debug.Assert(drug != null);
+    [HttpPost("Drug/Create")]
+    public IActionResult CreateDrug(Drug drug)
+    {
+        if (Request.Form.Files.Count != 1)
+        {
+            return BadRequest();
+        }
 
-  //   return View("Details", drug);
-  // }
+        var image = Request.Form.Files.ToList()[0];
+        
+        drug.ImageUrl = DrugRepo.UploadImage(image);
+        DrugRepo.Create(db, drug);
 
-  // [Route("[controller]/Edit/{id}")]
-  // public IActionResult EditDrug(int id)
-  // {
-  //   Drug? drug = FindDrugByID(id);
-  //   Debug.Assert(drug != null);
+        return Redirect("Table");
+    }
 
-  //   return View("Edit", drug);
-  // }
+    [Route("Drug/Details/{id}")]
+    public IActionResult DetailsDrug(int id)
+    {
+        Drug? drug = DrugRepo.FindByID(db, id);
+        if (drug == null) return Redirect("/404");
 
-  // [Route("[controller]/Delete/{id}")]
-  // public IActionResult DeleteDrug(int id)
-  // {
-  //   Drug? drug = FindDrugByID(id);
-  //   Debug.Assert(drug != null);
+        return View("Details", drug);
+    }
 
-  //   return View("Delete", drug);
-  // }
+    [Route("Drug/Edit/{id}")]
+    public IActionResult EditDrugView(int id)
+    {
+        var drug = DrugRepo.FindByID(db, id);
+        if (drug == null) return Redirect("/404");
+
+        return View("Edit", drug);
+    }
+
+    [HttpPost("Drug/Edit")]
+    public IActionResult EditDrug(Drug drug)
+    {
+        if (Request.Form.Files.Count == 1)
+        {
+            var image = Request.Form.Files.ToList()[0];
+            drug.ImageUrl = DrugRepo.UploadImage(image);
+        }
+
+        Console.WriteLine(drug.Id);
+        DrugRepo.Edit(db, drug);
+
+        return Redirect("Table");
+    }
+
+    [Route("Drug/Delete/{id}")]
+    public IActionResult DeleteDrugView(int id)
+    {
+        var drug = DrugRepo.FindByID(db, id);
+        if (drug == null) return Redirect("/404");
+
+        return View("Delete", drug);
+    }
+
+    [HttpPost("Drug/Delete")]
+    public IActionResult DeleteDrug()
+    {
+        int id = int.Parse(Request.Form["Id"]);
+
+        DrugRepo.Delete(db, id);
+        return Redirect("Table");
+    }
 }
