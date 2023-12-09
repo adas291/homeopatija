@@ -1,11 +1,15 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using homeopatija.Models;
+using System.Security.Cryptography;
+using homeopatija.Entities;
+using System;
 
 namespace homeopatija.Controllers;
 
 public class BurejaController : Controller
 {
+    public int asked = 0;
 
     public IActionResult Index()
     {
@@ -17,20 +21,42 @@ public class BurejaController : Controller
         return View();
     }
 
+    [Route("[controller]/Horoscope")]
+    public IActionResult Horoscope()
+    {
+        return View("Horoscope");
+    }
+
+    [Route("[controller]/AskQuestion")]
+    public IActionResult Answer(string question)
+    {
+        Debug.WriteLine(question);
+        string[] files = Directory.GetFiles($"wwwroot\\imgs\\tarotCards");
+        var random = new Random();
+        string selectedImage = files[random.Next(files.Length)];
+        var answer = new Entities.Question()
+        {
+            question = $"/imgs/tarotCards/{selectedImage.Split('\\').Last()}"
+        };
+
+        return View(answer);
+    }
+
     [Route("[controller]/Klausimynas")]
     public IActionResult Klausimynas()
     {
-        return View("Klausimynas");
+        var model = new Entities.Question()
+        {
+            question = "Ar jaučiate galvos skausmą?"
+        };
+
+        return View(model);
     }
 
-    public IActionResult OnPostButton1(IFormCollection data)
+    [HttpPost]
+    public IActionResult AnswerQuestionaire(string question, string answer)
     {
-        return View();
-    }
-
-
-    public IActionResult OnPostButton2(IFormCollection data)
-    {
-        return View();
+        Debug.WriteLine($"{question} \"{answer}\"");
+        return RedirectToAction("Index");
     }
 }

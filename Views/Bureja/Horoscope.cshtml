@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Horoscope";
+}
+
+<h1>Jūs turbūt mergelė</h1>
+
+<hr />
+<div>
+    <a asp-action="Index">Grįžti</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
