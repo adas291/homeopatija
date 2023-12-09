@@ -165,35 +165,21 @@ public class DiseaseController : Controller
     [HttpPost]
     public IActionResult FilterBySymptoms(List<int> selectedSymptomIds)
     {
+        if (selectedSymptomIds == null || !selectedSymptomIds.Any())
 
-        if (selectedSymptomIds == null || selectedSymptomIds.Count == 0)
         {
             // If no symptoms are selected, return all diseases
             var allDiseases = _db.Diseases.ToList();
             return PartialView("_DiseasesTablePartial", allDiseases);
         }
 
-        var selectedSymptomsCount = selectedSymptomIds.Count;
+        var diseasesWithSelectedSymptoms = _db.Diseases
+            .Where(d => _db.MandatorDiseaseSymptoms
+                .Any(mds => mds.DiseaseId == d.Id && selectedSymptomIds.Contains(mds.SymptomId)) ||
+                _db.PossibleDiseaseSymptoms
+                .Any(pds => pds.DiseaseId == d.Id && selectedSymptomIds.Contains(pds.SymptomId)));
 
-        var possibleDiseases = _db.PossibleDiseaseSymptoms
-            .Where(pds => selectedSymptomIds.Contains(pds.SymptomId))
-            .GroupBy(pds => pds.DiseaseId)
-            .Where(group => group.Count() == selectedSymptomsCount)
-            .Select(group => group.Key)
-            .ToList();
-
-        var mandatoryDiseases = _db.MandatorDiseaseSymptoms
-            .Where(mds => selectedSymptomIds.Contains(mds.SymptomId))
-            .GroupBy(mds => mds.DiseaseId)
-            .Where(group => group.Count() == selectedSymptomsCount)
-            .Select(group => group.Key)
-            .ToList();
-
-        var filteredDiseases = _db.Diseases
-            .Where(d => possibleDiseases.Contains(d.Id) || mandatoryDiseases.Contains(d.Id))
-            .ToList();
-
-        return PartialView("_DiseasesTablePartial", filteredDiseases);
+        return PartialView("_DiseasesTablePartial", diseasesWithSelectedSymptoms);
     }
 
 

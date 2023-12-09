@@ -14,11 +14,14 @@
     <div class="col-md-3">
         <form id="symptomForm">
             <h3>Symptoms</h3>
-            @foreach (var symptom in ViewBag.Symptoms)
+            @if (ViewBag.Symptoms != null)
             {
-                <div class="symptom" data-symptomid="@symptom.Id">
-                    <input type="checkbox" name="selectedSymptomIds" value="@symptom.Id"> @symptom.Title
-                </div>
+                foreach (var symptom in ViewBag.Symptoms)
+                {
+                    <div class="symptom" data-symptomid="@symptom.Id">
+                        <input type="checkbox" name="selectedSymptomIds" value="@symptom.Id"> @symptom.Title
+                    </div>
+                }
             }
             <button type="submit">Filter</button>
         </form>
