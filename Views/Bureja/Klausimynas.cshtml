@@ -12,10 +12,12 @@
     <div class="col-md-4">
         <form asp-action="AnswerQuestionaire" method="post">
             <input type="hidden" asp-for="question" />
+            <input type="hidden" asp-for="currentDiagId" />
+            <input type="hidden" asp-for="currentSymId" />
             <h3>@Model.question</h3>
             <input type="hidden" id="selectedAnswer" name="answer" />
-            <button type="button" class="btn btn-success" onclick="selectAnswer('Yes')">Taip</button>
-            <button type="button" class="btn btn-danger" onclick="selectAnswer('No')">Ne</button>
+            <button type="button" class="btn btn-success" onclick="selectAnswer('1')">Taip</button>
+            <button type="button" class="btn btn-danger" onclick="selectAnswer('0')">Ne</button>
             <br>
             <br>
             <div class="form-group">
