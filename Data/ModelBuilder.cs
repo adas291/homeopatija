@@ -8,10 +8,8 @@ public static class ModelBuilderExtensions
 {
   public static void Seed(this ModelBuilder modelBuilder)
   {
-
     var salt = BCrypt.Net.BCrypt.GenerateSalt();
     var password1 = BCrypt.Net.BCrypt.HashPassword("password", salt);
-
 
     modelBuilder.Entity<User>().HasData(
       new User

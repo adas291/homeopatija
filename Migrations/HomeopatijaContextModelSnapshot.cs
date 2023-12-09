@@ -72,7 +72,7 @@ namespace homeopatija.Migrations
                         {
                             Id = 1,
                             Body = "Labai nesknus",
-                            CreationTime = new DateTime(2023, 11, 20, 15, 49, 26, 826, DateTimeKind.Local).AddTicks(2844),
+                            CreationTime = new DateTime(2023, 12, 9, 14, 3, 15, 818, DateTimeKind.Local).AddTicks(7381),
                             DrugId = 1,
                             UserId = 1
                         });
@@ -118,9 +118,6 @@ namespace homeopatija.Migrations
                     b.Property<int>("SymptomId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("SymtopmId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DiagnosisId");
@@ -154,7 +151,7 @@ namespace homeopatija.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Disease");
+                    b.ToTable("Diseases");
                 });
 
             modelBuilder.Entity("homeopatija.Entities.Drug", b =>
@@ -199,7 +196,7 @@ namespace homeopatija.Migrations
                             Id = 1,
                             AvailableStock = 1,
                             Description = "Labai patikimas is db",
-                            ImageUrl = "~/imgs/v1.png",
+                            ImageUrl = "~/imgs/drugs/drug1.png",
                             OrderedStock = 1,
                             Price = 9.99m,
                             Title = "Procetamolis is db"
@@ -506,9 +503,9 @@ namespace homeopatija.Migrations
                         {
                             Id = 1,
                             Address = "adress1",
-                            CreationDate = new DateTime(2023, 11, 20, 15, 49, 26, 826, DateTimeKind.Local).AddTicks(1885),
+                            CreationDate = new DateTime(2023, 12, 9, 14, 3, 15, 818, DateTimeKind.Local).AddTicks(6844),
                             Name = "DB User1",
-                            Passowrd = "$2a$11$wh3QWgBDUsB47eX72BhbNumEE4q7tIGfav6QKDGFFwwcm9MquWLn6",
+                            Passowrd = "$2a$11$6MrFYM5CNpA8R4m6a/fBZunGx6bmFwR6c3q/HRrCbdWpDAA6NQL5y",
                             Phone = "86868",
                             Surname = "Surname1",
                             UserType = 1

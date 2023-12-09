@@ -16,7 +16,7 @@ public class DiagnosisSymptom
   public int Id { get; set; }
   public int DiagnosisId { get; set; }
   public Diagnosis Diagnosis { get; set; }
-  public int SymtopmId { get; set; }
+  public int SymptomId{ get; set; }
   public Symptom Symptom { get; set; }
 
 }

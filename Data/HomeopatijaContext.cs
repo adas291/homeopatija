@@ -25,11 +25,11 @@ public class HomeopatijaContext : DbContext
     DiagnosisSymptoms = Set<DiagnosisSymptom>();
   }
 
+
   public DbSet<Order> Orders { get; set; }
   public DbSet<User> Users { get; set; }
   public DbSet<Drug> Drugs { get; set; }
   public DbSet<Disease> Diseases { get; set; }
-
   public DbSet<DrugCompatibility> DrugCompatibilities { get; set; }
   public DbSet<OrderDrug> OrderDrugs { get; set; }
   public DbSet<CartDrug> CartDrugs { get; set; }

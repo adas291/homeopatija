@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace homeopatija.Migrations
 {
     /// <inheritdoc />
-    public partial class inti : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Disease",
+                name: "Diseases",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -24,7 +24,7 @@ namespace homeopatija.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Disease", x => x.Id);
+                    table.PrimaryKey("PK_Diseases", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -252,9 +252,9 @@ namespace homeopatija.Migrations
                 {
                     table.PrimaryKey("PK_MandatorDiseaseSymptoms", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MandatorDiseaseSymptoms_Disease_DiseaseId",
+                        name: "FK_MandatorDiseaseSymptoms_Diseases_DiseaseId",
                         column: x => x.DiseaseId,
-                        principalTable: "Disease",
+                        principalTable: "Diseases",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -278,9 +278,9 @@ namespace homeopatija.Migrations
                 {
                     table.PrimaryKey("PK_PossibleDiseaseSymptoms", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PossibleDiseaseSymptoms_Disease_DiseaseId",
+                        name: "FK_PossibleDiseaseSymptoms_Diseases_DiseaseId",
                         column: x => x.DiseaseId,
-                        principalTable: "Disease",
+                        principalTable: "Diseases",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -334,9 +334,9 @@ namespace homeopatija.Migrations
                 {
                     table.PrimaryKey("PK_Diagnosis", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Diagnosis_Disease_DiseaseId",
+                        name: "FK_Diagnosis_Diseases_DiseaseId",
                         column: x => x.DiseaseId,
-                        principalTable: "Disease",
+                        principalTable: "Diseases",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -410,7 +410,6 @@ namespace homeopatija.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     DiagnosisId = table.Column<int>(type: "INTEGER", nullable: false),
-                    SymtopmId = table.Column<int>(type: "INTEGER", nullable: false),
                     SymptomId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -433,17 +432,17 @@ namespace homeopatija.Migrations
             migrationBuilder.InsertData(
                 table: "Drugs",
                 columns: new[] { "Id", "AvailableStock", "Description", "DrugId", "ImageUrl", "OrderedStock", "Price", "Title" },
-                values: new object[] { 1, 1, "Labai patikimas is db", null, "~/imgs/v1.png", 1, 9.99m, "Procetamolis is db" });
+                values: new object[] { 1, 1, "Labai patikimas is db", null, "~/imgs/drugs/drug1.png", 1, 9.99m, "Procetamolis is db" });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Address", "CreationDate", "Name", "Passowrd", "Phone", "Surname", "UserType" },
-                values: new object[] { 1, "adress1", new DateTime(2023, 11, 20, 15, 49, 26, 826, DateTimeKind.Local).AddTicks(1885), "DB User1", "$2a$11$wh3QWgBDUsB47eX72BhbNumEE4q7tIGfav6QKDGFFwwcm9MquWLn6", "86868", "Surname1", 1 });
+                values: new object[] { 1, "adress1", new DateTime(2023, 12, 9, 14, 3, 15, 818, DateTimeKind.Local).AddTicks(6844), "DB User1", "$2a$11$6MrFYM5CNpA8R4m6a/fBZunGx6bmFwR6c3q/HRrCbdWpDAA6NQL5y", "86868", "Surname1", 1 });
 
             migrationBuilder.InsertData(
                 table: "Comments",
                 columns: new[] { "Id", "Body", "CreationTime", "DrugId", "UserId" },
-                values: new object[] { 1, "Labai nesknus", new DateTime(2023, 11, 20, 15, 49, 26, 826, DateTimeKind.Local).AddTicks(2844), 1, 1 });
+                values: new object[] { 1, "Labai nesknus", new DateTime(2023, 12, 9, 14, 3, 15, 818, DateTimeKind.Local).AddTicks(7381), 1, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CartDrugs_DrugId",
@@ -610,7 +609,7 @@ namespace homeopatija.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "Disease");
+                name: "Diseases");
 
             migrationBuilder.DropTable(
                 name: "Drugs");
