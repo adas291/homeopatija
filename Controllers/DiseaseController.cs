@@ -163,7 +163,7 @@ public class DiseaseController : Controller
 
     [HttpPost("Table")]
     [HttpPost]
-    public IActionResult FilterBySymptoms(List<int> selectedSymptomIds)
+    public IActionResult FilterBySymptoms(List<int> selectedSymptomIds) // denounce linq, embrace traditionalism
     {
         if (selectedSymptomIds == null || !selectedSymptomIds.Any())
 
@@ -173,11 +173,33 @@ public class DiseaseController : Controller
             return PartialView("_DiseasesTablePartial", allDiseases);
         }
 
-        var diseasesWithSelectedSymptoms = _db.Diseases
-            .Where(d => _db.MandatorDiseaseSymptoms
-                .Any(mds => mds.DiseaseId == d.Id && selectedSymptomIds.Contains(mds.SymptomId)) ||
-                _db.PossibleDiseaseSymptoms
-                .Any(pds => pds.DiseaseId == d.Id && selectedSymptomIds.Contains(pds.SymptomId)));
+        List<Entities.Disease> diseasesWithSelectedSymptoms = new List<Entities.Disease>();
+
+        foreach (var disease in _db.Diseases)
+        {
+            
+            int count = 0;
+
+            foreach (var selectedSymptomId in selectedSymptomIds)
+            {
+                bool hasMandatorSymptom = _db.MandatorDiseaseSymptoms
+                    .Any(mds => mds.DiseaseId == disease.Id && mds.SymptomId == selectedSymptomId);
+
+                bool hasPossibleSymptom = _db.PossibleDiseaseSymptoms
+                    .Any(pds => pds.DiseaseId == disease.Id && pds.SymptomId == selectedSymptomId);
+
+                if (hasMandatorSymptom || hasPossibleSymptom)
+                {
+                    count++;
+                }
+            }
+
+            if (count == selectedSymptomIds.Count)
+            {
+                diseasesWithSelectedSymptoms.Add(disease);
+            }
+        }
+
 
         return PartialView("_DiseasesTablePartial", diseasesWithSelectedSymptoms);
     }
