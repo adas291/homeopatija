@@ -31,19 +31,19 @@ public class BurejaController : Controller
     [Route("[controller]/Horoscope")]
     public IActionResult Horoscope()
     {
-        return View("Horoscope");
+        return View("Horoscope");//change to get based on current user
     }
 
     [Route("[controller]/AskQuestion")]
     public IActionResult Answer(string question)
     {
-        Debug.WriteLine(question);
         string[] files = Directory.GetFiles($"wwwroot\\imgs\\tarotCards");
         var random = new Random();
         string selectedImage = files[random.Next(files.Length)];
         var answer = new Entities.Question()
         {
-            question = $"/imgs/tarotCards/{selectedImage.Split('\\').Last()}"
+            question = question,
+            answer = $"/imgs/tarotCards/{selectedImage.Split('\\').Last()}"
         };
 
         return View(answer);
@@ -67,7 +67,7 @@ public class BurejaController : Controller
             TempData["StatusMessage"] = "nepavyko sukurti naujos diagnozės";
             return BadRequest("Klaida sukuriant naują diagnozę");
         }
-        if (unasked.Id == 0)
+        if (unasked.Id == 0) //Kai pasibaigia klausimynas
         {
             Debug.WriteLine("Got enough symptoms");
             return View("Index");
@@ -125,19 +125,29 @@ public class BurejaController : Controller
         Debug.WriteLine($"Asked: {string.Join(", ", asked)}");
         var symptomIds = _db.Symptoms.Select(x => x.Id).ToList();
         var unasked = symptomIds.Except(asked).ToList();
-        Debug.WriteLine(string.Join(", ", unasked));
         if (asked.Count > 10)
         {
             return new Symptom() { Id = 0 };
         }
-        var random = new Random();
-        var selectedSymptom = unasked[random.Next(unasked.Count)];
-        return _db.Symptoms.Where(x => x.Id == selectedSymptom).FirstOrDefault();
+
+        List<(int, double)> idToUsefulness = new List<(int, double)>();
+        foreach (int id in unasked)
+        {
+            int usefullness = _db.MandatorDiseaseSymptoms.Where(x => x.SymptomId == id).Count();
+            int half_usefullness = _db.PossibleDiseaseSymptoms.Where(x => x.SymptomId == id).Count();
+            idToUsefulness.Add((id, usefullness + half_usefullness / 2.0));
+        }
+        var selectedSymptom = idToUsefulness.OrderByDescending(x => x.Item2).First();
+        return _db.Symptoms.Where(x => x.Id == selectedSymptom.Item1).FirstOrDefault();
     }
 
     [HttpPost]
     public IActionResult AnswerQuestionaire(Entities.Question ans)
     {
+        if (ans.answer == null)
+        {
+            return RedirectToAction("Klausimynas");
+        }
         DiagnosisSymptom ds = new DiagnosisSymptom()
         {
             DiagnosisId = ans.currentDiagId,
