@@ -3,7 +3,7 @@
 *@
 
 @{
-    ViewData["Title"] = "Compatability matrix";
+    ViewData["Title"] = "Suderinamumo matrica";
 }
 
 <style>
@@ -26,31 +26,32 @@
 </style>
 
 <h1>Compatability matrix</h1>
-<form asp-action="Save">
-<input type="submit" value="Save" class="btn btn-primary" />
+<form asp-action="SaveCompatability" method="post">
+<input type="submit" value="Saugoti" class="btn btn-primary" />
 
 <table cellspacing="0" cellpadding="0" class="compat-table">
     <tr class="column-header">
         <th></th>
-        @foreach (var rowItem in Model)
+        @foreach (var rowItem in Model.drugs)
         {
             <th>@rowItem.Title</th>
         }
     </tr>
 
-    @foreach (var rowItem in Model)
+    @foreach (var rowItem in Model.drugs)
     {
         <tr>
             <th>@rowItem.Title</th>
-            @foreach (var columnItem in Model)
+            @foreach (var columnItem in Model.drugs)
             {
                 <td>
                     <input
-                        x-row="@rowItem.ID"
-                        x-column="@columnItem.ID"
-                        disabled="@(rowItem.ID == columnItem.ID)"
+                        x-row="@rowItem.Id"
+                        x-column="@columnItem.Id"
+                        disabled="@(rowItem.Id == columnItem.Id)"
                         type="checkbox"
-                    />
+                        @Html.Raw(Model.compatibilities.Contains(Tuple.Create(Math.Min(rowItem.Id, columnItem.Id), Math.Max(rowItem.Id, columnItem.Id))) ? "checked" : "")
+                        @Html.Raw(rowItem.Id < columnItem.Id ? $"name='{rowItem.Id}-{columnItem.Id}'" : "") />
                 </td>
             }
         </tr>

@@ -1,5 +1,6 @@
 using homeopatija.Entities;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol.Plugins;
 
 namespace homeopatija.Repos;
 
@@ -86,5 +87,56 @@ public class DrugRepo
     public static List<Drug> ListAll(HomeopatijaContext db)
     {
         return db.Drugs.ToList();
+    }
+
+    public static List<Tuple<int, int>> ListCompatibilities(HomeopatijaContext db)
+    {
+        var compatibilities = new List<Tuple<int, int>>();
+        foreach (var row in db.DrugCompatibilities.ToList())
+        {
+            compatibilities.Add(Tuple.Create(row.DrugAId, row.DrugBId));
+        }
+        return compatibilities;
+    }
+
+    public static void AddCompatibility(HomeopatijaContext db, int A, int B)
+    {
+        int minId = Math.Min(A, B);
+        int maxId = Math.Max(A, B);
+        var row = new DrugCompatibility{ DrugAId = minId, DrugBId = maxId };
+        db.DrugCompatibilities.Add(row);
+        db.SaveChanges();
+    }
+
+    public static void RemoveCompatibility(HomeopatijaContext db, int A, int B)
+    {
+        int minId = Math.Min(A, B);
+        int maxId = Math.Max(A, B);
+        foreach (var row in db.DrugCompatibilities.Where(row => row.DrugAId == minId && row.DrugBId == maxId))
+        {
+            if (row == null) continue;
+            db.DrugCompatibilities.Remove(row);
+        }
+        db.SaveChanges();
+    }
+
+    public static void UpdateCompatibilities(HomeopatijaContext db, List<Tuple<int, int>> newCompatibilities)
+    {
+        var existingCompatibilities = ListCompatibilities(db);
+        foreach (var existingCompatibility in existingCompatibilities)
+        {
+            if (!newCompatibilities.Contains(existingCompatibility))
+            {
+                RemoveCompatibility(db, existingCompatibility.Item1, existingCompatibility.Item2);
+            }
+        }
+
+        foreach (var newCompatibility in newCompatibilities)
+        {
+            if (!existingCompatibilities.Contains(newCompatibility))
+            {
+                AddCompatibility(db, newCompatibility.Item1, newCompatibility.Item2);
+            }
+        }
     }
 }
