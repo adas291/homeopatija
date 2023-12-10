@@ -259,15 +259,15 @@ public class DiseaseController : Controller
             }
 
             // Update the existing diagnosis if a matching disease is found
-            /* if (bestMatchedDisease != null)
+             if (bestMatchedDisease != null)
              {
                  pendingDiagnosis.UserId = userId;
                  pendingDiagnosis.DiseaseId = bestMatchedDisease.Id;
                  pendingDiagnosis.Description = $"{bestMatchedDisease.Description}, {bestMatchedDisease.Causes}, {bestMatchedDisease.Treatment}";
-                 pendingDiagnosis.Certainty = maxSimilarity; // Certainty is now the calculated similarity
+                 pendingDiagnosis.Certainty = maxSimilarity; 
 
                  await _db.SaveChangesAsync();
-             }*/
+             }
         }
         Debug.WriteLine("rasta liga:");
         Debug.WriteLine(bestMatchedDisease.Name);
