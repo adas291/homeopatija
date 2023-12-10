@@ -205,66 +205,72 @@ public class DiseaseController : Controller
         return PartialView("_DiseasesTablePartial", diseasesWithSelectedSymptoms);
     }
     //diagnoze
-
     [Route("Diagnosis")]
     public async Task<IActionResult> CreateDiagnosis()
     {
         // Assuming userId is 1 for now
         int userId = 1;
 
-        // Fetch symptom IDs for a specific diagnosis ID (-1 as mentioned)
-        var diagnosisSymptomIds = await _db.DiagnosisSymptoms
-            .Where(ds => ds.DiagnosisId == -1) // Replace this with your actual diagnosis ID criteria
-            .Select(ds => ds.SymptomId)
-            .ToListAsync();
-
-        // Fetch all diseases with their associated symptoms
-        var diseasesWithSymptoms = await _db.Diseases
-            .ToListAsync();
-
-        // Your logic to find the disease with closest or exact symptoms here...
+        var pendingDiagnosis = await _db.Diagnosis.FirstOrDefaultAsync(d => d.DiseaseId == -1);
         Entities.Disease bestMatchedDisease = null;
-        double maxSimilarity = 0.0;
 
-        foreach (var disease in diseasesWithSymptoms)
+        if (pendingDiagnosis != null)
         {
-            var mandatorySymptoms = await _db.MandatorDiseaseSymptoms
-                .Where(mds => mds.DiseaseId == disease.Id)
-                .Select(mds => mds.SymptomId)
+            // Find symptoms for the pending diagnosis from DiagnoseSymptoms
+            var diagnosisSymptoms = await _db.DiagnosisSymptoms
+                .Where(ds => ds.DiagnosisId == pendingDiagnosis.Id)
+                .ToListAsync();
+            Debug.WriteLine(diagnosisSymptoms.Count());
+
+            // Fetch all disease
+            var diseases = await _db.Diseases
                 .ToListAsync();
 
-            var possibleSymptoms = await _db.PossibleDiseaseSymptoms
-                .Where(pds => pds.DiseaseId == disease.Id)
-                .Select(pds => pds.SymptomId)
-                .ToListAsync();
+            
+            float maxSimilarity = 0;
 
-            // Calculate similarity based on matched symptoms
-            var matchedSymptoms = diagnosisSymptomIds.Intersect(mandatorySymptoms.Concat(possibleSymptoms)).Count();
-            var totalSymptoms = diagnosisSymptomIds.Count + mandatorySymptoms.Concat(possibleSymptoms).Distinct().Count();
-            var similarity = (double)matchedSymptoms / totalSymptoms;
-
-            if (similarity > maxSimilarity)
+            foreach (var disease in diseases)
             {
-                maxSimilarity = similarity;
-                bestMatchedDisease = disease;
+                Debug.WriteLine(disease.Name);
+
+                var mandatorySymptoms = await _db.MandatorDiseaseSymptoms
+                    .Where(mds => mds.DiseaseId == disease.Id)
+                    .Select(mds => mds.SymptomId)
+                    .ToListAsync();
+
+                var possibleSymptoms = await _db.PossibleDiseaseSymptoms
+                    .Where(pds => pds.DiseaseId == disease.Id)
+                    .Select(pds => pds.SymptomId)
+                    .ToListAsync();
+
+                // Calculate similarity based on symptoms' severity for the pending diagnosis
+                var sharedMandatorySymptoms = diagnosisSymptoms.Count(ds => ds.Severity == 1 && mandatorySymptoms.Contains(ds.SymptomId));
+                var sharedPossibleSymptoms = diagnosisSymptoms.Count(ds => ds.Severity == 1 && possibleSymptoms.Contains(ds.SymptomId));
+
+                // Calculate similarity considering weighted mandatory symptoms
+                float similarity = (sharedMandatorySymptoms * 2) + sharedPossibleSymptoms;
+
+                // Update if the disease has higher similarity
+                if (similarity > maxSimilarity)
+                {
+                    maxSimilarity = similarity;
+                    bestMatchedDisease = disease;
+                }
             }
-        }
 
-        // Create a new Diagnosis entry if a matching disease is found
-        if (bestMatchedDisease != null)
-        {
-            var diagnosis = new Diagnos
+            // Update the existing diagnosis if a matching disease is found
+           /* if (bestMatchedDisease != null)
             {
-                UserId = userId,
-                DiseaseId = bestMatchedDisease.Id,
-                Description = $"{bestMatchedDisease.Description}, {bestMatchedDisease.Causes}, {bestMatchedDisease.Treatment}",
-                Certainty = (float)(maxSimilarity * 100) 
-            };
+                pendingDiagnosis.UserId = userId;
+                pendingDiagnosis.DiseaseId = bestMatchedDisease.Id;
+                pendingDiagnosis.Description = $"{bestMatchedDisease.Description}, {bestMatchedDisease.Causes}, {bestMatchedDisease.Treatment}";
+                pendingDiagnosis.Certainty = maxSimilarity; // Certainty is now the calculated similarity
 
-            _db.Diagnosis.Add(diagnosis);
-            await _db.SaveChangesAsync();
+                await _db.SaveChangesAsync();
+            }*/
         }
-
+        Debug.WriteLine("rasta liga:");
+        Debug.WriteLine(bestMatchedDisease.Name);
         return RedirectToAction("Diagnosis", "Bureja");
     }
 

@@ -34,4 +34,11 @@ public class DiseaseRepo
         }
         return db.SaveChanges();
     }
+
+    public static int CreateDiagnosis(HomeopatijaContext db, Diagnos diagnos)
+    {
+        db.Diagnosis.Add(diagnos);
+        return db.SaveChanges();
+    }
+
 }
