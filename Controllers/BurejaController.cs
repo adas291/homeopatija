@@ -71,7 +71,8 @@ public class BurejaController : Controller
         if (unasked.Id == 0) //Kai pasibaigia klausimynas
         {
             Debug.WriteLine("Got enough symptoms");
-            return View("Index");
+            //return View("Index");
+            return RedirectToAction("Diagnosis", "Disease");
         }
 
         var model = new Entities.Question()
