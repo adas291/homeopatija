@@ -37,16 +37,17 @@ public class BurejaController : Controller
     [Route("[controller]/AskQuestion")]
     public IActionResult Answer(string question)
     {
-        string[] files = Directory.GetFiles($"wwwroot\\imgs\\tarotCards");
+        string[] files = Directory.GetFiles(Path.Combine("wwwroot", "imgs", "tarotCards"));
         var random = new Random();
         string selectedImage = files[random.Next(files.Length)];
+
         var answer = new Entities.Question()
         {
             question = question,
-            answer = $"/imgs/tarotCards/{selectedImage.Split('\\').Last()}"
+            answer = Path.Combine("/", "imgs", "tarotCards", selectedImage.Split(Path.DirectorySeparatorChar).Last())
         };
 
-        return View(answer);
+      return View(answer);
     }
 
     [Route("[controller]/Klausimynas")]
