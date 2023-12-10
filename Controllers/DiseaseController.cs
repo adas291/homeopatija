@@ -21,14 +21,14 @@ public class DiseaseController : Controller
     private readonly HomeopatijaContext _db;
 
     public DiseaseController(HomeopatijaContext db)
-     {
-         _db = db;
-     }
+    {
+        _db = db;
+    }
 
-    [HttpPost("EditDisease")] 
+    [HttpPost("EditDisease")]
     public IActionResult EditDisease(Entities.Disease disease)
     {
-        if (ModelState.IsValid) 
+        if (ModelState.IsValid)
         {
             var result = DiseaseRepo.EditDisease(_db, disease);
 
@@ -40,7 +40,7 @@ public class DiseaseController : Controller
         }
 
         TempData["StatusMessage"] = "Liga nebuvo atnaujinta";
-        return View("Edit", disease); 
+        return View("Edit", disease);
     }
 
     [Route("Edit")]
@@ -58,46 +58,46 @@ public class DiseaseController : Controller
 
     [Route("Create")]
 
-     public IActionResult Create()  
-     {
-         return View("Create");
+    public IActionResult Create()
+    {
+        return View("Create");
 
-     }
+    }
 
-     [HttpPost("CreateDisease")] 
+    [HttpPost("CreateDisease")]
 
-     public IActionResult CreateDisease(Entities.Disease disease)
-     {
-         if (disease.Name is null)
-         {
-             return BadRequest("Klaida, Name is null");
-         }
-         if (disease.Description is null)
-         {
-             return BadRequest("Klaida, Description is null");
-         }
-         if (disease.Causes is null)
-         {
-             return BadRequest("Klaida, causes is null");
-         }
-         if (disease.Treatment is null)
-         {
-             return BadRequest("Klaida, Treatment is null");
-         }
+    public IActionResult CreateDisease(Entities.Disease disease)
+    {
+        if (disease.Name is null)
+        {
+            return BadRequest("Klaida, Name is null");
+        }
+        if (disease.Description is null)
+        {
+            return BadRequest("Klaida, Description is null");
+        }
+        if (disease.Causes is null)
+        {
+            return BadRequest("Klaida, causes is null");
+        }
+        if (disease.Treatment is null)
+        {
+            return BadRequest("Klaida, Treatment is null");
+        }
 
-         var result = DiseaseRepo.CreateDisease(_db, disease);
-         if (result != 1)
-         {
-             TempData["StatusMessage"] = "Liga nebuvo įrašyta";
-             return BadRequest("Klaida įrašant ligą");
-         }
+        var result = DiseaseRepo.CreateDisease(_db, disease);
+        if (result != 1)
+        {
+            TempData["StatusMessage"] = "Liga nebuvo įrašyta";
+            return BadRequest("Klaida įrašant ligą");
+        }
 
-         TempData["StatusMessage"] = "Liga įrašyta sėkmingai";
-         return View("Table", _db.Diseases.ToList());
-     }
+        TempData["StatusMessage"] = "Liga įrašyta sėkmingai";
+        return View("Table", _db.Diseases.ToList());
+    }
 
-   [Route("Table")]
-    public IActionResult Index()  
+    [Route("Table")]
+    public IActionResult Index()
     {
         var symptoms = _db.Symptoms.ToList();
         ViewBag.Symptoms = symptoms;
@@ -119,7 +119,7 @@ public class DiseaseController : Controller
 
 
     [Route("DeleteDisease")]
-    public IActionResult DeleteDisease(int id)          
+    public IActionResult DeleteDisease(int id)
     {
         var result = DiseaseRepo.Delete(_db, id);
         if (result != 1)
@@ -178,7 +178,7 @@ public class DiseaseController : Controller
 
         foreach (var disease in _db.Diseases)
         {
-            
+
             int count = 0;
 
             foreach (var selectedSymptomId in selectedSymptomIds)
@@ -226,7 +226,7 @@ public class DiseaseController : Controller
             var diseases = await _db.Diseases
                 .ToListAsync();
 
-            
+
             float maxSimilarity = 0;
 
             foreach (var disease in diseases)
@@ -259,21 +259,18 @@ public class DiseaseController : Controller
             }
 
             // Update the existing diagnosis if a matching disease is found
-           /* if (bestMatchedDisease != null)
-            {
-                pendingDiagnosis.UserId = userId;
-                pendingDiagnosis.DiseaseId = bestMatchedDisease.Id;
-                pendingDiagnosis.Description = $"{bestMatchedDisease.Description}, {bestMatchedDisease.Causes}, {bestMatchedDisease.Treatment}";
-                pendingDiagnosis.Certainty = maxSimilarity; // Certainty is now the calculated similarity
+            /* if (bestMatchedDisease != null)
+             {
+                 pendingDiagnosis.UserId = userId;
+                 pendingDiagnosis.DiseaseId = bestMatchedDisease.Id;
+                 pendingDiagnosis.Description = $"{bestMatchedDisease.Description}, {bestMatchedDisease.Causes}, {bestMatchedDisease.Treatment}";
+                 pendingDiagnosis.Certainty = maxSimilarity; // Certainty is now the calculated similarity
 
-                await _db.SaveChangesAsync();
-            }*/
+                 await _db.SaveChangesAsync();
+             }*/
         }
         Debug.WriteLine("rasta liga:");
         Debug.WriteLine(bestMatchedDisease.Name);
         return RedirectToAction("Diagnosis", "Bureja");
     }
-
-
-
 }

@@ -1,0 +1,19 @@
+﻿@model homeopatija.Entities.Question
+
+@{
+    ViewData["Title"] = "Diagnosis";
+}
+
+<h3>Jūsų diagnozė:</h3>
+<h1>@Model.answer</h1>
+
+<hr />
+<div>
+    <a asp-action="Index">Grįžti</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

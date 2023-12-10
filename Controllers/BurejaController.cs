@@ -10,6 +10,7 @@ using NuGet.Protocol.Events;
 
 namespace homeopatija.Controllers;
 
+[Route("Bureja")]
 public class BurejaController : Controller
 {
     private readonly HomeopatijaContext _db;
@@ -17,25 +18,20 @@ public class BurejaController : Controller
     {
         _db = db;
     }
-
+    [Route("Index")]
     public IActionResult Index()
     {
         return View();
     }
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    [Route("[controller]/Horoscope")]
+    [Route("Horoscope")]
     public IActionResult Horoscope()
     {
-        return View("Horoscope");//change to get based on current user
+        return View();//change to get based on current user
     }
 
-    [Route("[controller]/AskQuestion")]
-    public IActionResult Answer(string question)
+    [Route("AskQuestion")]
+    public IActionResult AskQuestion(string question)
     {
         string[] files = Directory.GetFiles(Path.Combine("wwwroot", "imgs", "tarotCards"));
         var random = new Random();
@@ -47,10 +43,10 @@ public class BurejaController : Controller
             answer = Path.Combine("/", "imgs", "tarotCards", selectedImage.Split(Path.DirectorySeparatorChar).Last())
         };
 
-      return View(answer);
+        return View("AskQuestion", answer);
     }
 
-    [Route("[controller]/Klausimynas")]
+    [Route("Klausimynas")]
     public IActionResult Klausimynas()
     {
         int userId = 1;//TODO: Change user id to current user
@@ -71,7 +67,6 @@ public class BurejaController : Controller
         if (unasked.Id == 0) //Kai pasibaigia klausimynas
         {
             Debug.WriteLine("Got enough symptoms");
-            //return View("Index");
             return RedirectToAction("Diagnosis", "Disease");
         }
 
@@ -85,6 +80,20 @@ public class BurejaController : Controller
         return View(model);
     }
 
+    [Route("Diagnosis")]
+    public IActionResult Diagnosis()
+    {
+        int userId = 1; //TODO: change to current user
+        var model = new Entities.Question()
+        {
+            answer = GetLastDiagnosisName(userId),
+        };
+        return View("Diagnosis", model);
+    }
+
+    public string GetLastDiagnosisName(int userId) {
+        return _db.Diagnosis.Where(x => x.UserId == userId).OrderBy(x => x.Id).Last().Disease.Name;
+    }
 
     public int GetDiagnosisId(int userId)
     {
@@ -99,7 +108,7 @@ public class BurejaController : Controller
             }
 
             return _db.Diagnosis
-                .Where(x => x.UserId == userId && x.DiseaseId == -1).Last().Id;
+                .Where(x => x.UserId == userId && x.DiseaseId == -1).OrderBy(x => x.Id).Last().Id;
         }
 
         int lastId = createdBefore.Last().Id;
