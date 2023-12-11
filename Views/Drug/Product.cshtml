@@ -61,7 +61,7 @@
 
     <div class="form-group">
       <label class="h3" for="comment-body">Rašyti komentarą</label>
-      @Html.TextArea("Body", new {@class="form-control rounded-0", @placeholder = "Rašykite komentaro tekstą"})
+      @Html.TextArea("Body", new {@class="form-control rounded-0", @required="true", @placeholder = "Rašykite komentaro tekstą"})
     </div>
     <button id="submit-comment" class="btn btn-primary float-right" type="submit">Komentuoti</button>
   </form>
