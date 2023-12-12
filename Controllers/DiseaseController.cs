@@ -60,33 +60,27 @@ public class DiseaseController : Controller
 
     public IActionResult Create()
     {
+        var symptoms = _db.Symptoms.ToList();
+        ViewBag.Symptoms = symptoms.Skip(1);
         return View("Create");
 
     }
 
     [HttpPost("CreateDisease")]
-
-    public IActionResult CreateDisease(Entities.Disease disease)
+    public IActionResult CreateDisease(Entities.Disease disease, List<int> mandatorySymptomIds, List<int> possibleSymptomIds)
     {
-        if (disease.Name is null)
+        if (disease.Name is null || disease.Description is null || disease.Causes is null || disease.Treatment is null)
         {
-            return BadRequest("Klaida, Name is null");
-        }
-        if (disease.Description is null)
-        {
-            return BadRequest("Klaida, Description is null");
-        }
-        if (disease.Causes is null)
-        {
-            return BadRequest("Klaida, causes is null");
-        }
-        if (disease.Treatment is null)
-        {
-            return BadRequest("Klaida, Treatment is null");
+            return BadRequest("Klaida, vienas arba keli laukai yra tušti.");
         }
 
-        var result = DiseaseRepo.CreateDisease(_db, disease);
-        if (result != 1)
+        if (mandatorySymptomIds.Count == 0 && possibleSymptomIds.Count == 0)
+        {
+            return BadRequest("Klaida, nepasirinktas nei vienas simptomas.");
+        }
+        var result = DiseaseRepo.CreateDisease(_db, disease, mandatorySymptomIds, possibleSymptomIds);
+
+        if (result <= 0)
         {
             TempData["StatusMessage"] = "Liga nebuvo įrašyta";
             return BadRequest("Klaida įrašant ligą");
@@ -96,11 +90,15 @@ public class DiseaseController : Controller
         return View("Table", _db.Diseases.ToList());
     }
 
+
+
+
+
     [Route("Table")]
     public IActionResult Index()
     {
         var symptoms = _db.Symptoms.ToList();
-        ViewBag.Symptoms = symptoms;
+        ViewBag.Symptoms = symptoms.Skip(1);
         return View("Table", _db.Diseases.ToList());
     }
 
@@ -122,7 +120,7 @@ public class DiseaseController : Controller
     public IActionResult DeleteDisease(int id)
     {
         var result = DiseaseRepo.Delete(_db, id);
-        if (result != 1)
+        if (result <= 0)
         {
             TempData["StatusMessage"] = "Liga nebuvo pašalinta";
             return BadRequest("Klaida ištrinant ligą");
@@ -171,7 +169,7 @@ public class DiseaseController : Controller
         {
             // If no symptoms are selected, return all diseases
             var allDiseases = _db.Diseases.ToList();
-            return PartialView("_DiseasesTablePartial", allDiseases);
+            return PartialView("_DiseasesTablePartial", allDiseases.Skip(1));
         }
 
         List<Entities.Disease> diseasesWithSelectedSymptoms = new List<Entities.Disease>();

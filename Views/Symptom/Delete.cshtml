@@ -1,0 +1,32 @@
+﻿@model homeopatija.Entities.Symptom
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Trinimas</h1>
+
+<h3>Ar tikrai norite ištrinti šį simptomą?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+    </dl>
+    
+    <form asp-action="DeleteSymptom" method="post">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Trinti" class="btn btn-danger" /> |
+        <a asp-action="Index">Grįžti atgal</a>
+    </form>
+</div>

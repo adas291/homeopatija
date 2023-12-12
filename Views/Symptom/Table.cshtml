@@ -1,0 +1,50 @@
+﻿@model IEnumerable<homeopatija.Entities.Symptom>
+
+@{
+    ViewData["Title"] = "Table";
+}
+
+<style>
+    .no-wrap-link {
+        white-space: nowrap;
+        display: inline-block; /* Or 'block' if you want the link to be on its own line */
+        padding: 5px 10px; /* Example padding, adjust as needed */
+        font-size: 14px; /* Example font size, adjust as needed */
+    }
+</style>
+
+<h1>Simptomai</h1>
+
+<p>
+    <a asp-action="Create">Įrašyti naują simptomą</a>
+</p>
+
+<div class="row">
+    <div class="col-md-9">
+        <div id="diseaseList">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Pavadinimas</th>
+                        <th>Aprašas</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Skip(1))
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                            <td>
+                                @Html.ActionLink("Redaguoti simptomą", "Edit", new { id = item.Id }, new { @class = "no-wrap-link" })
+                                @Html.ActionLink("Ištrinti simptomą", "Delete", new { id = item.Id }, new { @class = "no-wrap-link" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

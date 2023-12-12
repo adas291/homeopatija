@@ -4,16 +4,25 @@
     ViewData["Title"] = "Table";
 }
 
+<style>
+    .no-wrap-link {
+        white-space: nowrap;
+        display: inline-block; /* Or 'block' if you want the link to be on its own line */
+        padding: 5px 10px; /* Example padding, adjust as needed */
+        font-size: 14px; /* Example font size, adjust as needed */
+    }
+</style>
+
 <h1>Ligos</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Įrašyti naują ligą</a>
 </p>
 
 <div class="row">
     <div class="col-md-3">
         <form id="symptomForm">
-            <h3>Symptoms</h3>
+            <h3>Simptomai</h3>
             @if (ViewBag.Symptoms != null)
             {
                 foreach (var symptom in ViewBag.Symptoms)
@@ -23,7 +32,7 @@
                     </div>
                 }
             }
-            <button type="submit">Filter</button>
+            <button type="submit">Filtruoti</button>
         </form>
     </div>
     <div class="col-md-9">
@@ -32,26 +41,26 @@
                 <!-- Table header -->
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Causes</th>
-                        <th>Description</th>
-                        <th>Treatment</th>
+                        <th>Pavadinimas</th>
+                        <th>Aprašas</th>
+                        <th>Priežastis</th>
+                        <th>Gydymas</th>
                         <th></th>
                     </tr>
                 </thead>
                 <!-- Table body -->
                 <tbody>
-                    @foreach (var item in Model)
+                    @foreach (var item in Model.Skip(1))
                     {
                         <tr>
                             <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Causes)</td>
                             <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Causes)</td>
                             <td>@Html.DisplayFor(modelItem => item.Treatment)</td>
                             <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.Id })
-                                @Html.ActionLink("Details", "Details", new { id = item.Id })
-                                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                                @Html.ActionLink("Redaguoti ligą", "Edit", new { id = item.Id }, new { @class = "no-wrap-link" })
+                                @Html.ActionLink("Detaliau", "Details", new { id = item.Id }, new { @class = "no-wrap-link" })
+                                @Html.ActionLink("Ištrinti ligą", "Delete", new { id = item.Id }, new { @class = "no-wrap-link" })
                             </td>
                         </tr>
                     }

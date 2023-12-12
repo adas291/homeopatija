@@ -4,43 +4,65 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Įrašymas</h1>
 
-<h4>Disease</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="CreateDisease">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name">Pavadinimas</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Causes" class="control-label"></label>
-                <input asp-for="Causes" class="form-control" />
-                <span asp-validation-for="Causes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+                <label asp-for="Description">Aprašymas</label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Treatment" class="control-label"></label>
+                <label asp-for="Causes">Priežastys</label>
+                <input asp-for="Causes" class="form-control" />
+                <span asp-validation-for="Causes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Treatment">Gydymas</label>
                 <input asp-for="Treatment" class="form-control" />
                 <span asp-validation-for="Treatment" class="text-danger"></span>
             </div>
+
+            <h2>Pasirinkite simptomus</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Symptoms</th>
+                        <th>Būtinas</th>
+                        <th>Pasitaikantis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var symptom in ViewBag.Symptoms)
+                    {
+                        <tr>
+                            <td>@symptom.Title</td>
+                            <td><input type="checkbox" name="MandatorySymptomIds" value="@symptom.Id" /></td>
+                            <td><input type="checkbox" name="PossibleSymptomIds" value="@symptom.Id" /></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
             <div class="form-group">
-                <input type="submit" value="CreateDisease" class="btn btn-primary" />
+                <input type="submit" value="Įrašyti ligą" class="btn btn-primary" />
             </div>
+
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Grįžti atgal</a>
 </div>
 
 @section Scripts {

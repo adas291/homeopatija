@@ -1,12 +1,22 @@
 ﻿@model IEnumerable<homeopatija.Entities.Disease>
 
+<style>
+  .no-wrap-link {
+    white-space: nowrap;
+    display: inline-block; /* Or 'block' if you want the link to be on its own line */
+    padding: 5px 10px; /* Example padding, adjust as needed */
+    font-size: 14px; /* Example font size, adjust as needed */
+  }
+</style>
+
+
 <table class="table">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Causes</th>
-            <th>Description</th>
-            <th>Treatment</th>
+            <th>Pavadinimas</th>
+            <th>Aprašas</th>
+            <th>Priežastis</th>
+            <th>Gydymas</th>
             <th></th>
         </tr>
     </thead>
@@ -15,13 +25,14 @@
         {
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                <td>@Html.DisplayFor(modelItem => item.Causes)</td>
                 <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                <td>@Html.DisplayFor(modelItem => item.Causes)</td>
                 <td>@Html.DisplayFor(modelItem => item.Treatment)</td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id })
-                    @Html.ActionLink("Details", "Details", new { id = item.Id })
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    @Html.ActionLink("Redaguoti ligą", "Edit", new { id = item.Id }, new { @class = "no-wrap-link" })
+                    @Html.ActionLink("Detaliau", "Details", new { id = item.Id }, new { @class = "no-wrap-link" })
+                    @Html.ActionLink("Ištrinti ligą", "Delete", new { id = item.Id }, new { @class = "no-wrap-link" })
+
                 </td>
             </tr>
         }
