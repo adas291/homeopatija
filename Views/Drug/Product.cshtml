@@ -37,7 +37,7 @@
     <input type="hidden" id="commentIdInput" name="Id" value="">
     <input type="hidden" id="drugId" name="DrugId" value="@Model.Drug.Id">
     <div>Redaguoti komentarą</div>
-    <textarea class="form-control rounded-0" name="Body" id="update-comment-body-area" rows="3"></textarea>
+    <textarea required class="form-control rounded-0" name="Body" id="update-comment-body-area" rows="3"></textarea>
     <button class="btn btn-outline-danger" id="cancel-edit-btn">Atšaukti</button>
     <button class="btn btn-success" id="submit-updated-comment-btn">Atnaujinti komentarą</button>
   </form>
@@ -61,7 +61,7 @@
 
     <div class="form-group">
       <label class="h3" for="comment-body">Rašyti komentarą</label>
-      @Html.TextArea("Body", new {@class="form-control rounded-0", @required="true", @placeholder = "Rašykite komentaro tekstą"})
+      @Html.TextArea("Body", new {@class="form-control rounded-0", @required="true",  @placeholder = "Rašykite komentaro tekstą"})
     </div>
     <button id="submit-comment" class="btn btn-primary float-right" type="submit">Komentuoti</button>
   </form>
@@ -150,7 +150,13 @@
   });
 
   const reportBtn = document.getElementById("submitReportBtn")
+  const cancelReportBtn = document.getElementById("cancel-report-btn")
   const reportForm = document.getElementById("reportForm")
+
+  cancelReportBtn.addEventListener('click', (e) => {
+    e.preventDefault()
+    reportModal.close()
+  })
 
   reportBtn.addEventListener('click', async (event) => {
     event.preventDefault()
