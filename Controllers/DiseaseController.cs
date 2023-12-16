@@ -267,6 +267,11 @@ public class DiseaseController : Controller
                  await _db.SaveChangesAsync();
              }
         }
+        if (bestMatchedDisease == null)
+        {
+            TempData["StatusMessage"] = "Trūksta duomenų";
+            return View("Table", _db.Diseases.ToList());
+        }
         Debug.WriteLine("rasta liga:");
         Debug.WriteLine(bestMatchedDisease.Name);
         return RedirectToAction("Diagnosis", "Bureja");
