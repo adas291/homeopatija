@@ -1,6 +1,6 @@
 namespace homeopatija.Entities;
 
-public class Diagnos
+public class Diagnosis
 {
     public int Id { get; set; }
     public float Certainty { get; set; }
@@ -15,7 +15,7 @@ public class DiagnosisSymptom
 {
     public int Id { get; set; }
     public int DiagnosisId { get; set; }
-    public Diagnos Diagnosis { get; set; }
+    public Diagnosis Diagnosis { get; set; }
     public int SymptomId { get; set; }
     public Symptom Symptom { get; set; }
     public int Severity { get; set; }

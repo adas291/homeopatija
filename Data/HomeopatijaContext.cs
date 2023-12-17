@@ -20,7 +20,7 @@ public class HomeopatijaContext : DbContext
         Payments = Set<Payment>();
         Questionnaires = Set<Questionnaire>();
         DiagnosisSymptoms = Set<DiagnosisSymptom>();
-        Diagnosis = Set<Diagnos>();
+        Diagnosis = Set<Diagnosis>();
     }
 
     public DbSet<Order> Orders { get; set; }
@@ -40,7 +40,7 @@ public class HomeopatijaContext : DbContext
     public DbSet<PaymentMethod> PaymentMethods { get; set; }
     public DbSet<Questionnaire> Questionnaires { get; set; }
     public DbSet<DiagnosisSymptom> DiagnosisSymptoms { get; set; }
-    public DbSet<Diagnos> Diagnosis { get; set; }
+    public DbSet<Diagnosis> Diagnosis { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

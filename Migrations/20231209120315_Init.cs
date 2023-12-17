@@ -433,7 +433,7 @@ namespace homeopatija.Migrations
             migrationBuilder.InsertData(
                 table: "Drugs",
                 columns: new[] { "Id", "AvailableStock", "Description", "DrugId", "ImageUrl", "OrderedStock", "Price", "Title" },
-                values: new object[] { 1, 1, "Labai patikimas is db", null, "~/imgs/drugs/drug1.png", 1, 9.99m, "Procetamolis is db" });
+                values: new object[] { 1, 1, "Labai patikimas is db", null, "/imgs/drugs/drug1.png", 1, 9.99m, "Procetamolis is db" });
 
             migrationBuilder.InsertData(
                 table: "Users",

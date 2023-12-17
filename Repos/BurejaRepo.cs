@@ -36,7 +36,7 @@ public static class BurejaRepo
 
     public static int CreateNewDiagnosis(HomeopatijaContext db, int userId)
     {
-        Diagnos newDiagnos = new Diagnos()
+        Diagnosis newDiagnos = new Diagnosis()
         {
             Certainty = 0,
             Description = "-",
