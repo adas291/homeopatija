@@ -210,6 +210,9 @@ public class DiseaseController : Controller
 
         var pendingDiagnosis = await _db.Diagnosis.FirstOrDefaultAsync(d => d.DiseaseId == -1);
         Entities.Disease bestMatchedDisease = null;
+        // Fetch all disease
+        var diseases = await _db.Diseases
+            .ToListAsync();
 
         if (pendingDiagnosis != null)
         {
@@ -219,9 +222,7 @@ public class DiseaseController : Controller
                 .ToListAsync();
             Debug.WriteLine(diagnosisSymptoms.Count());
 
-            // Fetch all disease
-            var diseases = await _db.Diseases
-                .ToListAsync();
+
 
 
             float maxSimilarity = 0;
@@ -268,8 +269,13 @@ public class DiseaseController : Controller
         }
         if (bestMatchedDisease == null)
         {
+            pendingDiagnosis.UserId = userId;
+            pendingDiagnosis.DiseaseId = diseases[1].Id;
+            pendingDiagnosis.Description = $"{diseases[1].Description}, {diseases[1].Causes}, {diseases[1].Treatment}";
+            pendingDiagnosis.Certainty = 0;
+            await _db.SaveChangesAsync();
             TempData["StatusMessage"] = "Trūksta duomenų";
-            return View("Table", _db.Diseases.ToList());
+            return RedirectToAction("Index", "Bureja");
         }
         Debug.WriteLine("rasta liga:");
         Debug.WriteLine(bestMatchedDisease.Name);
