@@ -34,10 +34,10 @@ public class DrugRepo
         db.SaveChanges();
     }
 
-    public static void Delete(HomeopatijaContext db, int id)
+    public static bool Delete(HomeopatijaContext db, int id)
     {
         var result = db.Drugs.Find(id);
-        if (result == null) return;
+        if (result == null) return false;
 
         if (result.ImageUrl != null)
         {
@@ -45,6 +45,7 @@ public class DrugRepo
         }
         db.Drugs.Remove(result);
         db.SaveChanges();
+        return true;
     }
 
     public static Drug? FindByID(HomeopatijaContext db, int id)
@@ -52,10 +53,10 @@ public class DrugRepo
         return db.Drugs.Find(id);
     }
 
-    public static void Edit(HomeopatijaContext db, Drug changes)
+    public static bool Edit(HomeopatijaContext db, Drug changes)
     {
         var drug = db.Drugs.Find(changes.Id);
-        if (drug == null) return;
+        if (drug == null) return false;
         
         drug.Title = changes.Title;
         if (changes.Description != null)
@@ -73,7 +74,14 @@ public class DrugRepo
         }
         drug.AvailableStock = changes.AvailableStock;
         drug.OrderedStock = changes.OrderedStock;
-        db.SaveChanges();
+        try
+        {
+            db.SaveChanges();
+        } catch (DbUpdateException)
+        {
+            return false;
+        }
+        return true;
     }
 
     public static List<Comment> FindCommentsByDrugID(HomeopatijaContext db, int id)
@@ -99,16 +107,22 @@ public class DrugRepo
         return compatibilities;
     }
 
-    public static void AddCompatibility(HomeopatijaContext db, int A, int B)
+    public static bool AddCompatibility(HomeopatijaContext db, int A, int B)
     {
         int minId = Math.Min(A, B);
         int maxId = Math.Max(A, B);
         var row = new DrugCompatibility{ DrugAId = minId, DrugBId = maxId };
         db.DrugCompatibilities.Add(row);
-        db.SaveChanges();
+        try
+        {
+            return db.SaveChanges() == 1;
+        } catch (DbUpdateException)
+        {
+            return false;
+        }
     }
 
-    public static void RemoveCompatibility(HomeopatijaContext db, int A, int B)
+    public static bool RemoveCompatibility(HomeopatijaContext db, int A, int B)
     {
         int minId = Math.Min(A, B);
         int maxId = Math.Max(A, B);
@@ -117,17 +131,27 @@ public class DrugRepo
             if (row == null) continue;
             db.DrugCompatibilities.Remove(row);
         }
-        db.SaveChanges();
+        try
+        {
+            return db.SaveChanges() > 0;
+        }
+        catch (DbUpdateException)
+        {
+            return false;
+        }
     }
 
-    public static void UpdateCompatibilities(HomeopatijaContext db, List<Tuple<int, int>> newCompatibilities)
+    public static bool UpdateCompatibilities(HomeopatijaContext db, List<Tuple<int, int>> newCompatibilities)
     {
         var existingCompatibilities = ListCompatibilities(db);
         foreach (var existingCompatibility in existingCompatibilities)
         {
             if (!newCompatibilities.Contains(existingCompatibility))
             {
-                RemoveCompatibility(db, existingCompatibility.Item1, existingCompatibility.Item2);
+                if (!RemoveCompatibility(db, existingCompatibility.Item1, existingCompatibility.Item2))
+                {
+                    return false;
+                }
             }
         }
 
@@ -135,8 +159,13 @@ public class DrugRepo
         {
             if (!existingCompatibilities.Contains(newCompatibility))
             {
-                AddCompatibility(db, newCompatibility.Item1, newCompatibility.Item2);
+                if (!AddCompatibility(db, newCompatibility.Item1, newCompatibility.Item2))
+                {
+                    return false;
+                }
             }
         }
+
+        return true;
     }
 }

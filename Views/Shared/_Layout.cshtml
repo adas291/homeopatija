@@ -12,15 +12,8 @@
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
-<body class="" 
-  x-data="{showNotification: @(TempData.ContainsKey("StatusMessage").ToString().ToLower()) }">
+<body class="" x-data="{showNotification: @(TempData.ContainsKey("StatusMessage").ToString().ToLower()) }">
   @* <div id="notification" >Notification</div> *@
-
-  @{
-    Html.RenderPartial("/Views/Components/_Notification.cshtml");
-  }
-
-
 
   <header>
     <nav
@@ -66,8 +59,13 @@
       </div>
     </nav>
   </header>
+
+    
   @* <div class=""> *@
   <div class="container">
+        @{
+            Html.RenderPartial("/Views/Components/_Notification.cshtml");
+        }
     <main role="main" class="pb-3">
       @RenderBody()
     </main>
