@@ -7,22 +7,22 @@
 <h1>DUK</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Sukurti naują</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.OrderId)
+                Rūšiavimo ID
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Question)
+                Klausimas
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Answer)
+                Atsakymas
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreationDate)
+                Sukūrimo data
             </th>
             <th></th>
         </tr>
@@ -44,7 +44,7 @@
                     @Html.DisplayFor(modelItem => item.CreationDate)
                 </td>
                 <td>
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    @Html.ActionLink("Ištrinti", "Delete", new { id = item.Id })
                 </td>
             </tr>
         }

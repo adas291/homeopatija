@@ -84,18 +84,19 @@ public class BurejaController : Controller
     public IActionResult Diagnosis()
     {
         int userId = 1; //TODO: change to current user
-        (string ans, string desc) = GetLastDiagnosisName(userId);
+        (string ans, string desc, int cert) = GetLastDiagnosisName(userId);
         var model = new Entities.Question()
         {
             answer = ans,
-            question = desc
+            question = desc,
+            currentDiagId = cert
         };
         return View("Diagnosis", model);
     }
 
-    public (string, string) GetLastDiagnosisName(int userId) {
+    public (string, string, int) GetLastDiagnosisName(int userId) {
         var diag = _db.Diagnosis.Where(x => x.UserId == userId).OrderBy(x => x.Id).Last();
-        return (diag.Disease.Name, diag.Description);
+        return (diag.Disease.Name, diag.Description, (int)diag.Certainty);
     }
 
     public int GetDiagnosisId(int userId)

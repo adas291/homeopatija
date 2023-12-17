@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Sukurti naują</h1>
 
 <h4>DUK</h4>
 <hr />
@@ -13,35 +13,35 @@
         <form asp-action="CreateFAQ">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="OrderId" class="control-label"></label>
+                <label asp-for="OrderId" class="control-label">Užsakymo id</label>
                 <input asp-for="OrderId" class="form-control" />
                 <span asp-validation-for="OrderId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Question" class="control-label"></label>
+                <label asp-for="Question" class="control-label">Klausimas</label>
                 <input asp-for="Question" class="form-control" />
                 <span asp-validation-for="Question" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Answer" class="control-label"></label>
+                <label asp-for="Answer" class="control-label">Atsakymas</label>
                 <input asp-for="Answer" class="form-control" />
                 <span asp-validation-for="Answer" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreationDate" class="control-label"></label>
+                <label asp-for="CreationDate" class="control-label">Sukūrimo data</label>
                 <input asp-for="CreationDate" class="form-control" />
                 <span asp-validation-for="CreationDate" class="text-danger"></span>
             </div>
             <br/>
             <div class="form-group">
-                <input type="submit" value="CreateFAQ" class="btn btn-primary" />
+                <input type="submit" value="Sukurti DUK" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Grįžti</a>
 </div>
 
 @section Scripts {
