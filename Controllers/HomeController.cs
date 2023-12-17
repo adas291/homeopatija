@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using homeopatija.Models;
+using homeopatija.Data.Dtos;
 
 namespace homeopatija.Controllers;
 

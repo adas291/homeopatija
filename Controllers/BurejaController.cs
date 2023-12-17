@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using homeopatija.Models;
 using System.Security.Cryptography;
 using homeopatija.Entities;
 using System;

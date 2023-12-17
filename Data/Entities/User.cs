@@ -11,15 +11,15 @@ public enum UserType
 
 public class User
 {
-  public int Id { get; set; }
-  public string Name{ get; set; }
-  public string Surname { get; set; }
-  public string Passowrd{ get; set; }
-  public string Phone { get; set; }
-  public string Address { get; set; }
-  public UserType UserType { get; set; }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Surname { get; set; }
+    public string Password { get; set; }
+    public string Email { get; set; }
+    public string Phone { get; set; }
+    public string Address { get; set; }
+    public UserType UserType { get; set; }
 
-  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-  public DateTime CreationDate { get; set; }
-
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public DateTime CreationDate { get; set; }
 }

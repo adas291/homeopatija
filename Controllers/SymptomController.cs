@@ -8,7 +8,6 @@ using homeopatija.Repos;
 using AutoMapper;
 using homeopatija.Dtos;
 using Microsoft.EntityFrameworkCore;
-using homeopatija.Models;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 

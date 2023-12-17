@@ -1,8 +1,5 @@
-
-
 using homeopatija.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 public class HomeopatijaContext : DbContext
 {
@@ -25,7 +22,6 @@ public class HomeopatijaContext : DbContext
         DiagnosisSymptoms = Set<DiagnosisSymptom>();
         Diagnosis = Set<Diagnos>();
     }
-
 
     public DbSet<Order> Orders { get; set; }
     public DbSet<User> Users { get; set; }
@@ -51,6 +47,4 @@ public class HomeopatijaContext : DbContext
     {
         modelBuilder.Seed();
     }
-
-
 }

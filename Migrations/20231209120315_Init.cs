@@ -121,7 +121,8 @@ namespace homeopatija.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Surname = table.Column<string>(type: "TEXT", nullable: false),
-                    Passowrd = table.Column<string>(type: "TEXT", nullable: false),
+                    Password = table.Column<string>(type: "TEXT", nullable: false),
+                    Email = table.Column<string>(type: "TEXT", nullable: false),
                     Phone = table.Column<string>(type: "TEXT", nullable: false),
                     Address = table.Column<string>(type: "TEXT", nullable: false),
                     UserType = table.Column<int>(type: "INTEGER", nullable: false),
@@ -436,8 +437,8 @@ namespace homeopatija.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Address", "CreationDate", "Name", "Passowrd", "Phone", "Surname", "UserType" },
-                values: new object[] { 1, "adress1", new DateTime(2023, 12, 9, 14, 3, 15, 818, DateTimeKind.Local).AddTicks(6844), "DB User1", "$2a$11$6MrFYM5CNpA8R4m6a/fBZunGx6bmFwR6c3q/HRrCbdWpDAA6NQL5y", "86868", "Surname1", 1 });
+                columns: new[] { "Id", "Address", "CreationDate", "Name", "Password", "Email", "Phone", "Surname", "UserType" },
+                values: new object[] { 1, "adress1", new DateTime(2023, 12, 9, 14, 3, 15, 818, DateTimeKind.Local).AddTicks(6844), "DB User1", "$2a$11$6MrFYM5CNpA8R4m6a/fBZunGx6bmFwR6c3q/HRrCbdWpDAA6NQL5y", "jonas@jontais.lt", "86868", "Surname1", 1 });
 
             migrationBuilder.InsertData(
                 table: "Comments",

@@ -1,6 +1,6 @@
-﻿using homeopatija.Models;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using homeopatija.Data.Dtos;
 
 namespace homeopatija.Controllers
 {

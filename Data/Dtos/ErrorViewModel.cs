@@ -1,4 +1,4 @@
-namespace homeopatija.Models;
+namespace homeopatija.Data.Dtos;
 
 public class ErrorViewModel
 {

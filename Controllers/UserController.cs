@@ -1,6 +1,6 @@
-﻿using homeopatija.Models;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using homeopatija.Entities;
 
 namespace homeopatija.Controllers
 {
@@ -47,8 +47,7 @@ namespace homeopatija.Controllers
         // GET: UserController/Edit/5
         public ActionResult Edit(int id)
         {
-
-        User user = new User(){ FirstName = "Petras", LastName = "Dovydaitis", Password = "grietinė69", Email = "petras.dovydaitis@vilkaviškiopieninė.lt", PhoneNumber = "+370********" };
+            User user = new User(){ Name = "Petras", Surname = "Dovydaitis", Password = "grietinė69", Email = "petras.dovydaitis@vilkaviškiopieninė.lt", Phone = "+370********" };
 
             return View("Edit", user);
         }

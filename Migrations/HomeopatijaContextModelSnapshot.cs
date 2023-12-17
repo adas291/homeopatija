@@ -479,7 +479,11 @@ namespace homeopatija.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Passowrd")
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -505,7 +509,8 @@ namespace homeopatija.Migrations
                             Address = "adress1",
                             CreationDate = new DateTime(2023, 12, 9, 14, 3, 15, 818, DateTimeKind.Local).AddTicks(6844),
                             Name = "DB User1",
-                            Passowrd = "$2a$11$6MrFYM5CNpA8R4m6a/fBZunGx6bmFwR6c3q/HRrCbdWpDAA6NQL5y",
+                            Password = "$2a$11$6MrFYM5CNpA8R4m6a/fBZunGx6bmFwR6c3q/HRrCbdWpDAA6NQL5y",
+                            Email = "jonas@jontais.lt",
                             Phone = "86868",
                             Surname = "Surname1",
                             UserType = 1
