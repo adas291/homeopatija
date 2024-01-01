@@ -1,53 +1,77 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using homeopatija.Entities;
+using homeopatija.Data.Dtos;
+using homeopatija.Repos;
+using Microsoft.AspNetCore.Identity;
 
 namespace homeopatija.Controllers
 {
     public class UserController : Controller
     {
-        // GET: UserController
-        public ActionResult Index()
+        private readonly HomeopatijaContext db;
+
+        public UserController(HomeopatijaContext db)
         {
-            return View("Home/Index");
+            this.db = db;
         }
 
-        // GET: UserController/Details/5
+        public void ShowStatusMessage(string text)
+        {
+            TempData["StatusMessage"] = text;
+        }
+
+        [Route("Details")]
         public ActionResult Details(int id)
         {
-            return View();
+            return View("Details");
         }
 
-        // GET: UserController/Create
-        public ActionResult Create()
+        [Route("Register")]
+        public ActionResult Register()
         {
-            return View();
+            return View("Register");
         }
 
+        [Route("Login")]
         public ActionResult Login()
         {
-            return View();
+            
+            return View("Login");
         }
 
-        // POST: UserController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [HttpPost("Register")]
+        public ActionResult Create(RegisterUser userData)
         {
-            try
+            if (userData.Password != userData.RepeatPassword)
             {
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError("RepeatPassword", "Pakartotas slaptažodis nesutampa");
+                return View("Register");
             }
-            catch
+
+            Console.WriteLine("foo");
+            Console.WriteLine(userData.Password);
+            bool success = UserRepo.Create(db, userData.Name, userData.Surname, userData.Password, userData.Email, userData.Phone, userData.Address);
+            if (!success)
             {
-                return View();
+                ShowStatusMessage("Nepavyko užsiregistruoti");
+                return View("Register");
             }
+
+            ShowStatusMessage("Sėkmingai užsiregistruota");
+            return RedirectToAction("Login");
         }
 
         // GET: UserController/Edit/5
         public ActionResult Edit(int id)
         {
-            User user = new User(){ Name = "Petras", Surname = "Dovydaitis", Password = "grietinė69", Email = "petras.dovydaitis@vilkaviškiopieninė.lt", Phone = "+370********" };
+            User user = new User(){
+                Name = "Petras",
+                Surname = "Dovydaitis",
+                Password = "grietinė69",
+                Email = "petras.dovydaitis@vilkaviškiopieninė.lt",
+                Phone = "+370********"
+            };
 
             return View("Edit", user);
         }
