@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using homeopatija.Entities;
 using homeopatija.Repos;
 using AutoMapper;
-using homeopatija.Dtos;
+using homeopatija.Data.Dtos;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;

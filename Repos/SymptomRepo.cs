@@ -1,5 +1,5 @@
 ﻿namespace homeopatija.Repos;
-using homeopatija.Dtos;
+using homeopatija.Data.Dtos;
 using homeopatija.Entities;
 
 public class SymptomRepo

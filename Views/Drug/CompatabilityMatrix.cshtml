@@ -26,8 +26,11 @@
 </style>
 
 <h1>Suderinamumo matrica</h1>
+
+
+
 <form asp-action="SaveCompatability" method="post">
-<input type="submit" value="Saugoti" class="btn btn-primary" />
+    <input type="submit" value="Saugoti" class="btn btn-primary" /> | <a asp-action="">Eiti atgal</a>
 
 <table cellspacing="0" cellpadding="0" class="compat-table">
     <tr class="column-header">
@@ -58,6 +61,7 @@
     }
 </table>
 </form>
+
 
 <script>
     const compat_table = document.getElementsByClassName("compat-table")[0]
