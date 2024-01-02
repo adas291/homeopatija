@@ -4,6 +4,11 @@ using homeopatija.Entities;
 using homeopatija.Data.Dtos;
 using homeopatija.Repos;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text.Encodings.Web;
+using System.Text;
 
 namespace homeopatija.Controllers
 {
@@ -43,6 +48,7 @@ namespace homeopatija.Controllers
         [HttpPost("Register")]
         public ActionResult Create(RegisterUser userData)
         {
+            /*
             if (userData.Password != userData.RepeatPassword)
             {
                 ModelState.AddModelError("RepeatPassword", "Pakartotas slaptažodis nesutampa");
@@ -60,7 +66,11 @@ namespace homeopatija.Controllers
 
             ShowStatusMessage("Sėkmingai užsiregistruota");
             return RedirectToAction("Login");
+            */
+            return RedirectToPage("/404");
         }
+
+
 
         // GET: UserController/Edit/5
         public ActionResult Edit(int id)
@@ -68,9 +78,9 @@ namespace homeopatija.Controllers
             User user = new User(){
                 Name = "Petras",
                 Surname = "Dovydaitis",
-                Password = "grietinė69",
+                //Password = "grietinė69",
                 Email = "petras.dovydaitis@vilkaviškiopieninė.lt",
-                Phone = "+370********"
+                //Phone = "+370********"
             };
 
             return View("Edit", user);

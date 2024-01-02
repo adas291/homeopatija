@@ -1,7 +1,9 @@
 using homeopatija.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-public class HomeopatijaContext : DbContext
+public class HomeopatijaContext : IdentityDbContext<User, IdentityRole<int>, int>
 {
     public HomeopatijaContext(DbContextOptions<HomeopatijaContext> options) : base(options)
     {
@@ -45,6 +47,7 @@ public class HomeopatijaContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
         modelBuilder.Seed();
     }
 }

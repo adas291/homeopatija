@@ -1,8 +1,12 @@
 using homeopatija;
+using homeopatija.Entities;
 using homeopatija.Repos;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using homeopatija.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("AuthContextConnection") ?? throw new InvalidOperationException("Connection string 'AuthContextConnection' not found.");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -14,6 +18,10 @@ builder.Services.AddDbContext<HomeopatijaContext>(options =>
 {
   options.UseSqlite(builder.Configuration["ConnectionStrings:Default"]);
 }, ServiceLifetime.Singleton);
+
+builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
+        .AddEntityFrameworkStores<HomeopatijaContext>()
+        .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<EmailRepo>();
 builder.Services.AddScoped<CommentRepo>();
@@ -37,10 +45,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapRazorPages();
 
 app.Run();

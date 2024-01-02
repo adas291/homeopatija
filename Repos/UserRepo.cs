@@ -20,11 +20,11 @@ public class UserRepo
             Name = name,
             Surname = surname,
             Email = email,
-            Password = BCrypt.Net.BCrypt.HashPassword(password),
-            Phone = phone,
+            //Password = BCrypt.Net.BCrypt.HashPassword(password),
+            //Phone = phone,
             UserType = userType,
-            Address = address,
-            CreationDate = DateTime.Now
+            //Address = address,
+            //CreationDate = DateTime.Now
         });
 
         try

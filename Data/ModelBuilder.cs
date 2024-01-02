@@ -11,6 +11,7 @@ public static class ModelBuilderExtensions
         var salt = BCrypt.Net.BCrypt.GenerateSalt();
         var password1 = BCrypt.Net.BCrypt.HashPassword("password", salt);
 
+        /*
         modelBuilder.Entity<User>().HasData(
           new User
           {
@@ -18,7 +19,7 @@ public static class ModelBuilderExtensions
               Name = "DB User1",
               Surname = "Surname1",
               UserType = UserType.Admin,
-              Password = password1,
+              //Password = password1,
               Email = "jonas@jontais.lt",
               Phone = "86868",
               Address = "adress1",
@@ -49,6 +50,7 @@ public static class ModelBuilderExtensions
               DrugId = 1
           }
         );
+        */
 
     }
 }

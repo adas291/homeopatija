@@ -508,11 +508,11 @@ namespace homeopatija.Migrations
 
                     b.HasData(
                         new User {
-                            Id = 1,
+                            //Id = 1,
                             Address = "adress1",
                             CreationDate = new DateTime(2023, 12, 9, 14, 3, 15, 818, DateTimeKind.Local).AddTicks(6844),
                             Name = "DB User1",
-                            Password = "$2a$11$6MrFYM5CNpA8R4m6a/fBZunGx6bmFwR6c3q/HRrCbdWpDAA6NQL5y",
+                            //Password = "$2a$11$6MrFYM5CNpA8R4m6a/fBZunGx6bmFwR6c3q/HRrCbdWpDAA6NQL5y",
                             Phone = "86868",
                             Surname = "Surname1",
                             Email = "jonas@jonienai.lt",
